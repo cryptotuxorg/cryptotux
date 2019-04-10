@@ -10,6 +10,10 @@ It is particularly suited for workshops. Username is *bobby*, password is *brico
 ![screenshot](http://cryptotux.org/Cryptotux.png)
 
 ## Changelog
+### 0.4.4 > 10 apr 2019
+- docker tooling
+- rust
+
 ### 0.4.3 > 9 apr 2019
 - Visual code added
 - updates
