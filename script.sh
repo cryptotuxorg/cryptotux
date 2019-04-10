@@ -67,9 +67,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Config choice
-echo 'alias update-pkg="sudo apt update && sudo apt upgrade -y "
-alias udpate-clean="sudo deborphan -n --find-config | xargs sudo apt-get -y --purge autoremove;	sudo apt-get -y autoclean; sudo apt-get -y clean; rm ~/.bash_history"
-alias update-other="bash <(curl https://get.parity.io -L); npm update -g"
-
-alias update-all="update-pkg && update-other && update-clean;"' >> .bashrc
+echo '
+alias update-pkg="sudo apt update && sudo apt upgrade -y"
+alias update-all="bash ~/.update.sh' >> ~/.bashrc
 npm install -g tldr

@@ -12,7 +12,8 @@ It is particularly suited for workshops. Username is *bobby*, password is *brico
 ## Changelog
 ### 0.4.4 > 10 apr 2019
 - docker tooling
-- rust
+- added rust & vim
+- better update script 
 
 ### 0.4.3 > 9 apr 2019
 - Visual code added
