@@ -10,4 +10,3 @@ cd
 echo ">> Cleaning"
 sudo apt-get -y --purge autoremove; sudo apt-get -y clean; bleachbit -c --preset; rm .bash_history
 echo ">> Update done "
-
