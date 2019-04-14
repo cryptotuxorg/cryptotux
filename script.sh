@@ -10,8 +10,7 @@ sudo apt purge adwaita-icon-theme cups cups-bsd cups-client cups-common cups-ppd
 sudo apt purge samba-libs
 
 ## Install development tools
-sudo apt install curl
-sudo apt install git python3
+sudo apt install curl git python3 vim emacs
 curl https://sh.rustup.rs -sSf | sh
 
 ## Visual code
@@ -49,10 +48,10 @@ npm install -g ganache-cli
 ## Install Go environment (tendermint...)
 wget https://dl.google.com/go/go1.12.4.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.12.4.linux-amd64.tar.gz 
-echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
 
+echo "export GOROOT=/usr/local/go" >> ~/.bashrc
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
-echo "export PATH=$PATH:$GOPATH/bin" >> ~/.bashrc
+echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
 
 #Docker tooling
