@@ -69,8 +69,17 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker bobby
 
-# Config choice
+#Tutorials
+mkdir Tutorials
+cd Tutorials
+
+git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git
+git clone https://github.com/Xalava/elemental-dapp.git
+git clone https://github.com/cosmos/sdk-application-tutorial.git
+
+# Config Preferences
 echo '
 alias update-pkg="sudo apt update && sudo apt upgrade -y"
 alias update-all="bash ~/.update.sh' >> ~/.bashrc
 npm install -g tldr
+
