@@ -8,5 +8,5 @@ cd /home/bobby/Tutorials
 for i in */.git; do ( echo ">>> $i ";cd $i/..; git pull;); done;
 cd 
 echo ">> Cleaning"
-sudo apt-get -y --purge autoremove; sudo apt-get -y clean; bleachbit -c --preset; rm .bash_history
+sudo apt-get -y --purge autoremove; sudo apt-get -y clean; bleachbit -c --preset; 
 echo ">> Update done "

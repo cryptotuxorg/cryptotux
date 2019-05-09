@@ -7,9 +7,15 @@ It is particularly suited for workshops. Username is *bobby*, password is *brico
 
 -> http://cryptotux.org/
 
-![screenshot](http://cryptotux.org/Cryptotux.png)
+![screenshot](assets/screenshot.png)
 
 ## Changelog
+
+### 0.4.6 > 9 mai 2019
+- added brave browser
+- removed npm 
+- lighter image
+
 ### 0.4.5 > 14 apr 2019
 - added emacs
 - updated go

@@ -77,6 +77,12 @@ git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.g
 git clone https://github.com/Xalava/elemental-dapp.git
 git clone https://github.com/cosmos/sdk-application-tutorial.git
 
+#Brave
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+sudo sh -c 'echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com `lsb_release -sc` main" >> /etc/apt/sources.list.d/brave.list'
+sudo apt update
+sudo apt install brave-browser brave-keyring -y
+
 # Config Preferences
 echo '
 alias update-pkg="sudo apt update && sudo apt upgrade -y"
