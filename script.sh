@@ -67,7 +67,7 @@ npm install -g tldr
 
 # --- Desktop only section ---
 
-## Clean and simplify (desktop only) 
+## Clean and simplify (desktop only, optionnal) 
 sudo apt purge apparmor ufw
 sudo apt purge cups-daemon whoopsie pulseaudio-utils
 sudo apt purge ubuntu-release-upgrader-gtk update-manager update-notifier synaptic leafpad pavucontrol
