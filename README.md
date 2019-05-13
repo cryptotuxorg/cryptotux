@@ -9,6 +9,10 @@ It is particularly suited for workshops. Username is *bobby*, password is *brico
 
 ![screenshot](assets/screenshot.png)
 
+## To build
+sudo apt install vagrant
+vagrant up
+
 ## Changelog
 
 ### 0.4.6 > 9 mai 2019
