@@ -15,6 +15,20 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
   config.vm.hostname = "cryptotux"
 
+  #Default Ethereum ports
+  config.vm.network "forwarded_port", guest: 30303, host: 30303
+  config.vm.network "forwarded_port", guest: 8545, host: 8545
+
+  #Regtest Bitcoin ports
+  config.vm.network "forwarded_port", guest: 18443, host: 18443
+
+  #Common IPFS ports (hell!)
+  config.vm.network "forwarded_port", guest: 4001, host: 4001
+  config.vm.network "forwarded_port", guest: 4002, host: 4002
+  config.vm.network "forwarded_port", guest: 5001, host: 5001
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -61,7 +75,7 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  config.vm.provision :shell, :path => "install-server.sh" 
+  config.vm.provision :shell, :path => "install-base.sh" 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
@@ -69,4 +83,7 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+  if ARGV[0] == "ssh"
+    config.ssh.username = 'bobby'
+  end
 end
