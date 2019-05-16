@@ -5,17 +5,21 @@ Cryptotux is a Linux image preconfigured with tools for crypto development and e
 Cryptotux is currently supplied as .ova images that can be directly imported into Virtualbox (6.X+). 
 It is particularly suited for workshops. Username is *bobby*, password is *bricodeur*.
 
--> http://cryptotux.org/
+Download -> http://cryptotux.org/
 
 ![screenshot](assets/screenshot.png)
 
 ## To build
-sudo apt install vagrant
-vagrant up
+On a debian system
+`sudo apt install vagrant`
+
+To build and run the server version `vagrant up`
+
+To build and run the desktop version (still experimental) `vagrant up cryptotux-desktop`
 
 ## Changelog
 
-### 0.4.6 > 9 mai 2019
+### 0.4.6 > 9 may 2019
 - added brave browser
 - removed npm 
 - lighter image

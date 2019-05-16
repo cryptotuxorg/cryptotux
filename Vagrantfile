@@ -15,19 +15,19 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
   config.vm.hostname = "cryptotux"
 
-  #Default Ethereum ports
-  config.vm.network "forwarded_port", guest: 30303, host: 30303
-  config.vm.network "forwarded_port", guest: 8545, host: 8545
+  # #Default Ethereum ports
+  # config.vm.network "forwarded_port", guest: 30303, host: 30303
+  # config.vm.network "forwarded_port", guest: 8545, host: 8545
 
-  #Regtest Bitcoin ports
-  config.vm.network "forwarded_port", guest: 18443, host: 18443
+  # #Regtest Bitcoin ports
+  # config.vm.network "forwarded_port", guest: 18443, host: 18443
 
-  #Common IPFS ports (hell!)
-  config.vm.network "forwarded_port", guest: 4001, host: 4001
-  config.vm.network "forwarded_port", guest: 4002, host: 4002
-  config.vm.network "forwarded_port", guest: 5001, host: 5001
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
-  config.vm.network "forwarded_port", guest: 8081, host: 8081
+  # #Common IPFS ports (hell!)
+  # config.vm.network "forwarded_port", guest: 4001, host: 4001
+  # config.vm.network "forwarded_port", guest: 4002, host: 4002
+  # config.vm.network "forwarded_port", guest: 5001, host: 5001
+  # config.vm.network "forwarded_port", guest: 8080, host: 8080
+  # config.vm.network "forwarded_port", guest: 8081, host: 8081
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -47,19 +47,18 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
+  
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
   # config.vm.network "public_network"
-
+  
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-
+  
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -74,15 +73,20 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
-
+  
   config.vm.provision :shell, :path => "install-base.sh" 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+
+  config.vm.define "cryptotux-server", primary: true do |server|
+    server.vm.network "private_network", ip: "192.168.33.10"
+  end
+
+  config.vm.define "cryptotux-desktop", autostart: false do |desktop|
+    desktop.vm.network "private_network", ip: "192.168.33.11"
+    desktop.vm.provision "shell", inline: <<-SHELL
+      su -c "source /vagrant/install-desktop.sh" bobby
+    SHELL
+  end
+
   if ARGV[0] == "ssh"
     config.ssh.username = 'bobby'
   end
