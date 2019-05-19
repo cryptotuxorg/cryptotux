@@ -49,7 +49,7 @@ echo "export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH" >> ~/.bashrc
 source ~/.bashrc
 
 ## Docker tooling
-sudo apt-get install ca-certificates \
+sudo apt-get install -y ca-certificates \
     gnupg-agent \
     software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -75,8 +75,8 @@ git clone https://github.com/cryptotuxorg/cryptotux
 
 ## Configuration Preferences
 cd 
-cp -R /vagrant/assets/.config/ .
-cp -R /vagrant/assets/.bitcoin/ .
+cp -R /home/$USER/cryptotux/assets/.config/ .
+cp -R /home/$USER/cryptotux/assets/.bitcoin/ .
 echo '
 alias update-pkg="sudo apt-get update && sudo apt-get upgrade -y"
 alias update-all="bash ~/cryptotux/update.sh"' >> ~/.bashrc
