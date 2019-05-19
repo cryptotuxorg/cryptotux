@@ -3,7 +3,7 @@
 echo "##  INSTALL SERVER SCRIPT  ##"
 
 ## Install common development tools
-sudo apt-get install -y curl git python3 vim # Most likely already there
+sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
 curl https://sh.rustup.rs -sSf > rustup.sh
 sh rustup.sh -y
 rm rustup.sh
