@@ -21,7 +21,7 @@ To build and run the desktop version (still experimental) `vagrant up cryptotux-
 
 ### 0.4.6 > 9 may 2019
 - added brave browser
-- removed npm 
+- removed secondary npm packages
 - lighter image
 
 ### 0.4.5 > 14 apr 2019

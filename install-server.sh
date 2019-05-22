@@ -1,6 +1,11 @@
 #!/bin/bash -x
 
 echo "##  INSTALL SERVER SCRIPT  ##"
+# This script installs common development tools and major blockchain networks nodes
+# The script can be run on a fresh ubuntu server install as a user
+# Each section, except the last one, is relatively independant from the context
+# Contributions are welcome
+
 export DEBIAN_FRONTEND=noninteractive
 
 ## Install common development tools
@@ -8,7 +13,7 @@ sudo apt-get update
 sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
 cd
 curl https://sh.rustup.rs -sSf > rustup.sh
-sh rustup.sh -y #should not be sudo
+sh rustup.sh -y 
 echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
 rm rustup.sh
 
@@ -19,7 +24,7 @@ curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install -y nodejs
 mkdir ~/.npm-global
-npm config set prefix '"~"/.npm-global'
+npm config set prefix '~/.npm-global'
 echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.bashrc
 rm nodesource_setup.sh
 source ~/.bashrc
