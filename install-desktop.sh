@@ -12,7 +12,7 @@ sudo apt-get purge fonts-noto-cjk abiword abiword-common gnumeric audacious blue
 sudo apt-get purge xfburn guvcview sylpheed pidgin simple-scan xpad gnome mpv
 sudo apt-get purge hunspell* pidgin-data humanity-icon-theme gnumeric-common qttranslations5-l10n  libsane1 hplib-data
 sudo apt-get purge audacious-plugins audacious-plugins-data ffmpegthumbnailer galculator gnome-icon-theme gstreamer1.0-nice gstreamer1.0-plugins-bad gstreamer1.0-plugins-good libabiword-3.0 libmplex2-2.1-0 libfarstream-0.2-5 fcitx-data fcitx-modules
-sudo apt-get purge adwaita-icon-theme cups cups-bsd cups-client cups-common cups-ppdc fonts-noto-color-emoji fonts-tibetan-machine gconf2-common geoclue-2.0 geoip-database gsfonts gucharmap iio-sensor-proxy libgoffice-0.10-10 libgoffice-0.10-10-common libpresage-data libpresage1v5 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 lubuntu-gtk-core lxlauncher printer-driver-gutenprint printer-driver-hpcups printer-driver-splix  xfce4-power-manager xfce4-power-manager-data xfce4-power-manager-plugins pulseaudio
+sudo apt-get purge cups cups-bsd cups-client cups-common cups-ppdc fonts-noto-color-emoji fonts-tibetan-machine gconf2-common geoclue-2.0 geoip-database gsfonts gucharmap iio-sensor-proxy libgoffice-0.10-10 libgoffice-0.10-10-common libpresage-data libpresage1v5 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 lubuntu-gtk-core lxlauncher printer-driver-gutenprint printer-driver-hpcups printer-driver-splix xfce4-power-manager xfce4-power-manager-data xfce4-power-manager-plugins pulseaudio
 sudo apt-get purge samba-libs
 
 ## Visual code (desktop only) 
@@ -29,6 +29,11 @@ sudo sh -c 'echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.co
 sudo apt-get update
 sudo apt-get install -y brave-browser brave-keyring 
 
+## Java environment 
+sudo apt install -y default-jdk maven 
+
 ## Development tools
 sudo apt-get install -y emacs
 sudo apt-get install -y bitcoin-qt
+sudo apt install -y unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
+

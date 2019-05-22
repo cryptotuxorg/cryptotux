@@ -1,14 +1,19 @@
 #!/bin/bash -x
 
 echo "##  INSTALL SERVER SCRIPT  ##"
+export DEBIAN_FRONTEND=noninteractive
 
 ## Install common development tools
+sudo apt-get update
 sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
+cd
 curl https://sh.rustup.rs -sSf > rustup.sh
-sh rustup.sh -y
+sh rustup.sh -y #should not be sudo
+echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
 rm rustup.sh
 
 ## Node.js + installing packages locally
+cd 
 nodeVersion=10.x
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
@@ -75,8 +80,8 @@ git clone https://github.com/cryptotuxorg/cryptotux
 
 ## Configuration Preferences
 cd 
-cp -R /home/$USER/cryptotux/assets/.config/ .
-cp -R /home/$USER/cryptotux/assets/.bitcoin/ .
+cp -R /home/$USER/Tutorials/cryptotux/assets/.config/ .
+cp -R /home/$USER/Tutorials/cryptotux/assets/.bitcoin/ .
 echo '
 alias update-pkg="sudo apt-get update && sudo apt-get upgrade -y"
 alias update-all="bash ~/cryptotux/update.sh"' >> ~/.bashrc
