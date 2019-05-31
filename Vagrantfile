@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "./userfiles", "/home/bobby/commonfolder"
+  config.vm.synced_folder "./dataShare", "/dataShare/", create: true
   
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
@@ -42,6 +42,7 @@ Vagrant.configure("2") do |config|
     
     # Customize the amount of memory on the VM:
     # vb.memory = "1024"
+    vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional', '--bioslogodisplaytime', 0] 
   end
   
   # Install basic configuration
@@ -66,8 +67,10 @@ Vagrant.configure("2") do |config|
       su -c "source /vagrant/install-desktop.sh" bobby
     SHELL
   end
+  config.ssh.keys_only = false
 
   if ARGV[0] == "ssh"
     config.ssh.username = 'bobby'
+    config.ssh.password = 'bricodeur'
   end
 end

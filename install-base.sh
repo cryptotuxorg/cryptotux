@@ -8,7 +8,10 @@ adduser --quiet --disabled-password --shell /bin/bash --home /home/bobby --gecos
 usermod -aG sudo bobby
 echo "bobby:bricodeur" | sudo chpasswd
 cp -pr /home/vagrant/.ssh /home/bobby/
-chown -R bobby:bobby /home/bobby/.ssh
+chown -R bobby:bobby /home/bobby/
+chown -R bobby:bobby /dataShare/
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config    
+service ssh reload
 echo '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 su -c "source /vagrant/install-server.sh" bobby

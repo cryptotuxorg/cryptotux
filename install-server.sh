@@ -11,6 +11,7 @@ export DEBIAN_FRONTEND=noninteractive
 ## Install common development tools
 sudo apt-get update
 sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
+sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils 
 cd
 curl https://sh.rustup.rs -sSf > rustup.sh
 sh rustup.sh -y 
@@ -46,12 +47,14 @@ tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 cd go-ipfs
 sudo ./install.sh
+cd
 rm -rf go-ipfs
 
 ## Install Go environment (for tendermint ...)
 goVersion=1.12.4
 wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go"$goVersion".linux-amd64.tar.gz 
+rm go"$goVersion".linux-amd64.tar.gz
 
 echo "export GOROOT=/usr/local/go" >> ~/.bashrc
 echo "export GOPATH=\$HOME/go" >> ~/.bashrc
@@ -85,11 +88,14 @@ git clone https://github.com/cryptotuxorg/cryptotux
 
 ## Configuration Preferences
 cd 
-cp -R /home/$USER/Tutorials/cryptotux/assets/.config/ .
-cp -R /home/$USER/Tutorials/cryptotux/assets/.bitcoin/ .
+cp -R /vagrant/assets/.config/ .
+cp -R /vagrant/assets/.bitcoin/ .
+cp -R /vagrant/scripts/ .
+
 echo '
 alias update-pkg="sudo apt-get update && sudo apt-get upgrade -y"
-alias update-all="bash ~/cryptotux/update.sh"' >> ~/.bashrc
+alias update-all="bash ~/scripts/update.sh"
+alias update-clean="bash ~/scripts/clean.sh"' >> ~/.bashrc
 npm install -g tldr
 sudo apt-get install -y cowsay 
 echo '(echo "Welcome to Cryptotux !"; )| cowsay -f turtle ' >> ~/.bashrc

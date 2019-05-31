@@ -7,17 +7,42 @@ It is particularly suited for workshops. Username is *bobby*, password is *brico
 
 Download -> http://cryptotux.org/
 
-![screenshot](assets/screenshot.png)
+![screenshot](screenshot.png)
 
-## To build
-On a debian system
-`sudo apt install vagrant`
+## How to use it? The easy way
+* Install [virtualbox](https://virtualbox.org)
+* Download the desktop or server version on [cryptotux.org](https://cryptotux.org)
+* Click on the file or in "import appliance" in virtualbox
+* Launch from virtualbox
+* For the server version, it is best to connect via ssh `ssh bobby@192.168.33.10`
+* For the desktop version interact visually ! 
 
-To build and run the server version `vagrant up`
+For ease you can also sync a local folder, let's call it remote, and the internal folder of the machine with `sshfs bobby@cryptotux-server:/home/bobby remote`
 
-To build and run the desktop version (still experimental) `vagrant up cryptotux-desktop`
+Optionnaly, add cryptotux as known hosts (on Unix systems `echo '192.168.33.10 cryptotux' | sudo tee -a /etc/hosts`). You will then be able to connect with `ssh bobby@cryptotux`
+
+## To build from scratch
+
+* Install vagrant and virtualbox. On a debian or ubuntu system `sudo apt install vagrant virtualbox`
+* To build and run the server version `vagrant up`
+* To connect to the server : `vagrant ssh`
+
+And voilà !
+
+* To build and run the desktop version `vagrant up cryptotux-desktop`
+
+## Contribution
+We aim to provide a useful tool and meaningful project as a collaborative effort. The first objective is to offer a standard distribution for education and development. Suggestions, remarks, partnerships and pull requests are welcome. 
+
+* [Suggested issues](https://github.com/cryptotuxorg/cryptotux/projects/1)
+* [To fork](https://github.com/cryptotuxorg/cryptotux/fork)
 
 ## Changelog
+### 0.5.0 > 31 may 2019
+- Fully scripted desktop 
+- including java, sublime-text, artwork
+- Smaller images
+- added ssh password access 
 
 ### 0.4.6 > 9 may 2019
 - added brave browser

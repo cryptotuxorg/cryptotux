@@ -1,0 +1,102 @@
+# lxpanel <profile> config file. Manually editing is not recommended.
+# Use preference dialog in lxpanel to adjust config when you can.
+
+Global {
+  edge=bottom
+  allign=left
+  margin=0
+  widthtype=percent
+  width=100
+  height=22
+  transparent=1
+  tintcolor=#000000
+  alpha=134
+  setdocktype=1
+  setpartialstrut=1
+  usefontcolor=1
+  fontcolor=#FFFFF
+  background=0
+  backgroundfile=/home/bobby/.config/cryptotux-images/wallpaper.jpg
+  iconsize=22    
+}
+Plugin {
+  type=menu
+  Config {
+    image=~/.config/cryptotux-images/menu-light.png
+    system {
+    }
+    separator {
+    }
+    item {
+      image=gnome-logout
+      command=logout
+    }
+  }
+}
+Plugin {
+  type=launchtaskbar
+  Config {
+    Button {
+      id=menu://applications/Accessories/pcmanfm.desktop
+    }
+    Button {
+      id=brave-browser.desktop
+    }
+    Button {
+      id=lxterminal.desktop
+    }
+    FlatButton=0
+    GroupedTasks=1
+    UseSmallerIcons=-1
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
+  }
+  expand=0
+}
+Plugin {
+  type=pager
+  Config {
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
+  }
+}
+Plugin {
+  type=tray
+  Config {
+  }
+}
+Plugin {
+  type=dclock
+  Config {
+    ClockFmt=%R
+    TooltipFmt=%A %x
+    BoldFont=0
+    IconOnly=0
+    CenterText=0
+  }
+}
+Plugin {
+  type=launchbar
+  Config {
+    Button {
+      id=/usr/share/applications/lubuntu-logout.desktop
+    }
+  }
+}
+Plugin {
+  type=xkb
+  Config {
+    Model=pc105
+    LayoutsList=us,fr,es,de
+    VariantsList=,
+    ToggleOpt=grp:shift_caps_toggle
+  }
+}

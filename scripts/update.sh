@@ -1,12 +1,11 @@
-echo ">> Warning : Script designed to update and clean for image release"
+#!/bin/bash -x
+echo ">>> Update Script <<<"
 echo ">> Update repositories"
 sudo apt update && sudo apt upgrade -y
 echo ">> Update other tooling"
 bash <(curl https://get.parity.io -L); npm update -g
 echo ">> Update local repositories"
 cd /home/bobby/Tutorials
-for i in */.git; do ( echo ">>> $i ";cd $i/..; git pull;); done;
+for i in */.git; do ( echo "> $i ";cd $i/..; git pull;); done;
 cd 
-echo ">> Cleaning"
-sudo apt-get -y --purge autoremove; sudo apt-get -y clean; bleachbit -c --preset; 
 echo ">> Update done "
