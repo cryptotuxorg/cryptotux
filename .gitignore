@@ -1,3 +1,4 @@
 .vagrant
 *.log
 dataShare
+gcp-account.json

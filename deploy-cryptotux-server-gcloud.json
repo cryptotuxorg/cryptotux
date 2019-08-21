@@ -1,0 +1,21 @@
+{
+    "builders": [
+      {
+        "type": "googlecompute",
+        "account_file": "gcp-account.json",
+        "project_id": "cryptotux",
+        "source_image": "ubuntu-1804-bionic-v20190813a",
+        "ssh_username": "bobby",
+        "zone": "us-central1-a",
+        "image_name": "cryptotux-{{timestamp}}" 
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "shell",
+        "script": "install-server.sh",
+        "pause_before": "10s",
+        "timeout": "10s"
+      }
+    ]
+  }
