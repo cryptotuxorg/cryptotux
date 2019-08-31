@@ -1,0 +1,6 @@
+- hosts: cryptotux-bitcoin-server
+  user: vagrant
+  become: yes
+  roles:
+    - devtools
+    - bitcoind

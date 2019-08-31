@@ -1,0 +1,8 @@
+# TODO: checksum
+- name: Download Pantheon
+  get_url:
+    url: https://bintray.com/consensys/pegasys-repo/download_file?file_path=pantheon-{{ pantheon_version }}.tar.gz
+    dest: /tmp
+
+
+

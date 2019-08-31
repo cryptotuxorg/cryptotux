@@ -1,0 +1,19 @@
+---
+# tasks file for devtools
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - htop
+    - cowsay
+
+
+- name: Install virtualbox stuff
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - virtualbox-guest-dkms 
+    - virtualbox-guest-utils
