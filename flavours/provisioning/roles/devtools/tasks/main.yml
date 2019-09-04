@@ -9,4 +9,22 @@
     - htop
     - cowsay
   become: true  
-  
+
+- name: Add yarn gpg key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+  become: true  
+
+- name: Add yarn repo
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+    filename: yarn
+  become: true  
+
+- name: Install yarn
+  apt:
+    name: yarn
+    state: latest
+    update_cache: yes
