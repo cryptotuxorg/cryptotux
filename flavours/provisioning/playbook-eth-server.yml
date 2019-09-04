@@ -1,8 +1,6 @@
 - hosts: cryptotux-eth-server
   user: vagrant
-  become: yes
   roles:
     - devtools
-    - geth
+    - geth  
     - parity
-    - pantheon
