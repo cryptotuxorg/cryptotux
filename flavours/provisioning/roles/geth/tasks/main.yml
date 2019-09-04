@@ -5,3 +5,5 @@
 - name: Install geth
   apt:
     name: ethereum
+    state: latest
+    update_cache: yes
