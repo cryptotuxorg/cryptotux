@@ -8,12 +8,5 @@
     packages:
     - htop
     - cowsay
-
-
-- name: Install virtualbox stuff
-  apt:
-    name: "{{ packages }}"
-  vars:
-    packages:
-    - virtualbox-guest-dkms 
-    - virtualbox-guest-utils
+  become: true  
+  
