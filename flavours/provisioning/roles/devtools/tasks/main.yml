@@ -8,6 +8,8 @@
     packages:
     - htop
     - tig
+    - tmux
+    - python-pip
     - cowsay
     - build-essential
   become: true  
