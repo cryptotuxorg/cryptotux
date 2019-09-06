@@ -2,7 +2,7 @@
 
 ### Ethereum flavour 
 
-Geth, Parity, Pantheon
+Geth, Parity
 
 ### Bitcoin flavour 
 
