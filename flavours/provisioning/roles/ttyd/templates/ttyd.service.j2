@@ -1,0 +1,7 @@
+[Unit]
+Description=ttyd web terminal
+After=network.target
+[Service]
+ExecStart=/usr/local/bin/ttyd -p 3000 bash
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+- hosts: cryptotux-eth-server
+  user: vagrant
+  roles:
+    - devtools
+    - geth  
+    - parity
+    - ttyd

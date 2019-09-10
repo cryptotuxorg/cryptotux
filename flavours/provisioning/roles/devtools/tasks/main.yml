@@ -1,0 +1,59 @@
+---
+# tasks file for devtools
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - htop
+    - tig
+    - tmux
+    - python-pip
+    - cowsay
+    - build-essential
+  become: true  
+
+# Yarn
+
+- name: Add yarn gpg key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+  become: true  
+
+- name: Add yarn repo
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+    filename: yarn
+    update_cache: yes
+  become: true  
+
+- name: Install yarn
+  apt:
+    name: yarn
+    state: latest
+    update_cache: yes
+
+# Node 
+
+- name: Add node gpg key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+  become: true  
+
+- name: Add node repo
+  apt_repository:
+    repo:  "deb http://deb.nodesource.com/node_10.x {{ ansible_lsb.codename }} main"
+    state: present
+    filename: node
+    update_cache: yes
+  become: true  
+
+- name: Install node
+  apt:
+    name: nodejs
+    state: latest
+    update_cache: yes

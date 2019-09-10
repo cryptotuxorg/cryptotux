@@ -41,7 +41,7 @@ sudo apt-get update
 sudo apt-get install -y ethereum
 
 ## Install IPFS
-IPFSVersion=0.4.20
+IPFSVersion=0.4.9
 wget https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -51,7 +51,7 @@ cd
 rm -rf go-ipfs
 
 ## Install Go environment (for tendermint ...)
-goVersion=1.12.4
+goVersion=1.12.9
 wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go"$goVersion".linux-amd64.tar.gz 
 rm go"$goVersion".linux-amd64.tar.gz
@@ -72,7 +72,7 @@ sudo add-apt-repository \
    stable"
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker $USER
 

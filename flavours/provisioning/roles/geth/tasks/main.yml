@@ -1,0 +1,9 @@
+- name: Add geth ppa 
+  apt_repository:
+    repo: ppa:ethereum/ethereum
+
+- name: Install geth
+  apt:
+    name: ethereum
+    state: latest
+    update_cache: yes

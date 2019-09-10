@@ -1,0 +1,72 @@
+- name: Install ttyd dependencies
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - cmake
+    - g++ 
+    - pkg-config 
+    - git 
+    - vim-common 
+    - libwebsockets-dev 
+    - libjson-c-dev 
+    - libssl-dev
+  become: true  
+
+- git:
+    repo: https://github.com/tsl0922/ttyd.git
+    dest: /home/vagrant/ttyd
+
+
+- name: Creates ttyd build directory
+  file:
+    path: /home/vagrant/ttyd/build
+    state: directory
+
+- name: check if ttyd Makefile 
+  stat: 
+    path: /home/vagrant/ttyd/build/Makefile
+  register: makefile
+
+- name: build ttyd makefile
+  command: cmake ..
+  args:
+    chdir: /home/vagrant/ttyd/build
+  when: not makefile.stat.exists
+
+- name: check if ttyd build 
+  stat: 
+    path: /home/vagrant/ttyd/build/ttyd
+  register: ttydbin
+
+- name: make ttyd 
+  command: make 
+  args:
+    chdir: /home/vagrant/ttyd/build
+  when: not ttydbin.stat.exists
+
+- name: check if ttyd build 
+  stat: 
+    path: /usr/local/bin/ttyd
+  register: ttydinstalled
+
+- name: make install ttyd 
+  command: make install
+  args:
+    chdir: /home/vagrant/ttyd/build
+  when: not ttydinstalled.stat.exists
+
+- name: Install ttyd service file 
+  template:
+    src: ttyd.service.j2
+    # dest: /home/vagrant/.config/systemd/user/ttyd.service
+    dest: /lib/systemd/system/ttyd.service
+
+- name: Enable ttyd service 
+  systemd:
+    enabled: yes
+    state: started
+    name: ttyd.service
+    # scope: user
+
+# TODO: fis dbus stuff to directly connect as vagrant instead of root 

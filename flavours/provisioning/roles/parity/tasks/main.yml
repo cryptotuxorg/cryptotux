@@ -1,0 +1,4 @@
+- name: Install parity
+  snap:
+    name:
+      - parity

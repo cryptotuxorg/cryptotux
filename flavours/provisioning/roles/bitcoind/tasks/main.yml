@@ -1,0 +1,7 @@
+- name: Add bitcoin ppa 
+  apt_repository:
+    repo: ppa:bitcoin/bitcoin
+
+- name: Install bitcoind
+  apt:
+    name: bitcoind
