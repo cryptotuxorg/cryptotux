@@ -1,0 +1,46 @@
+- name: Add user booby
+  user:
+    name: bobby
+    password: $6$WpKByh5EK/M$S8bYaMXZEJNROH/7pyuzlPOJ14SwJzn0DkPgveQAupxZs8IYenF3pPrXuuNBHFivAsHA9fjRoe/imXfYz/17y0
+    createhome: yes
+    shell: /bin/bash
+    groups: docker,sudo
+    append: yes
+
+
+- name: Inserting a line after a pattern in Ansible example 
+  lineinfile:
+    path: /home/bobby/.bashrc
+    line: (echo "Welcome to Cryptotux !"; )| cowsay -f turtle
+
+
+- name: Create a tutorial directory
+  file:
+    path: /home/bobby/tutorials
+    state: directory
+    owner: bobby
+    group: bobby
+
+- name: clone Bitcoin Studio tutorial
+  git: repo=https://github.com/bitcoin-studio/{{ item }}.git dest=/home/bobby/tutorials/{{ item }}
+  with_items:
+  - Bitcoin-Programming-with-BitcoinJS
+  become_user: bobby
+
+- name: clone elemental dapp tutorial
+  git: repo=https://github.com/Xalava/{{ item }}.git dest=/home/bobby/tutorials/{{ item }}
+  with_items:
+  - elemental-dapp
+  become_user: bobby
+
+- name: clone cosmos sdk app tuto
+  git: repo=https://github.com/cosmos/{{ item }}.git dest=/home/bobby/tutorials/{{ item }}
+  with_items:
+  - sdk-application-tutorial
+  become_user: bobby
+
+- name: clone cosmos sdk app tuto
+  git: repo=https://github.com/cosmos/{{ item }}.git dest=/home/bobby/tutorials/{{ item }}
+  with_items:
+  - sdk-application-tutorial
+  become_user: bobby

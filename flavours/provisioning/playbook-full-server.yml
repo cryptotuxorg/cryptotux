@@ -1,0 +1,12 @@
+- hosts: cryptotux-full-server
+  user: vagrant
+  roles:
+    - ansible-role-docker
+    - devtools
+    - golang
+    - geth  
+    - parity
+    - bitcoind
+    - ipfs
+    - ttyd
+    - cryptotux

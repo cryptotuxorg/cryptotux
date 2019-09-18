@@ -1,0 +1,20 @@
+
+Vagrant.configure("2") do |config|
+
+    config.vm.define "cryptotux-full-server" do |machine|
+        machine.vm.network "private_network", ip: "172.17.177.23"
+        machine.vm.network "forwarded_port", guest: 3000, host: 3000
+        machine.vm.box = "ubuntu/bionic64"
+        machine.vm.provider "virtualbox" do |vb|
+            vb.name = "cryptotux-full-server"
+        end 
+        machine.vm.synced_folder "..", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["uid=1234", "gid=1234"]
+        machine.vm.hostname = "cryptotux-full-server"
+        machine.vm.provision "ansible_local" do |ansible|
+            ansible.become = true
+            ansible.verbose = "vvv"
+            ansible.galaxy_role_file = "requirements.yml"
+            ansible.playbook = "/vagrant/provisioning/playbook-full-server.yml"
+        end
+    end
+end
