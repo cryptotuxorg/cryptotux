@@ -62,3 +62,8 @@
   snap:
     name: rust
     channel: latest/edge
+
+- name: Install tldr
+  snap:
+    name: tldr
+    channel: latest/edge
