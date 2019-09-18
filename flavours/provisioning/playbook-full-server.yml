@@ -2,6 +2,7 @@
   user: vagrant
   roles:
     - devtools
+    - golang
     - geth  
     - parity
     - bitcoind
