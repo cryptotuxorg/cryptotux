@@ -1,0 +1,8 @@
+- hosts: cryptotux-full-server
+  user: vagrant
+  roles:
+    - devtools
+    - geth  
+    - parity
+    - bitcoind
+    - ttyd
