@@ -5,4 +5,5 @@
     - geth  
     - parity
     - bitcoind
+    - ipfs
     - ttyd
