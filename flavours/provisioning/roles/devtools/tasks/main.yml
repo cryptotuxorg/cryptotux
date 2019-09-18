@@ -57,3 +57,8 @@
     name: nodejs
     state: latest
     update_cache: yes
+
+- name: Install rust
+  snap:
+    name: rust
+    channel: latest/edge
