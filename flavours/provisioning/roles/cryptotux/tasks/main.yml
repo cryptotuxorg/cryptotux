@@ -44,3 +44,10 @@
   with_items:
   - sdk-application-tutorial
   become_user: bobby
+
+
+- name: Explicitly specifying named matched groups
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication no'
+    replace: 'PasswordAuthentication yes'
