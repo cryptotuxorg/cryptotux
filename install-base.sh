@@ -15,4 +15,5 @@ sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_
 service ssh reload
 echo '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-su -c "source /vagrant/install-server.sh" bobby
+## Launching the main installation script as user bobby
+su -c "source /vagrant/scripts/install-server.sh" bobby

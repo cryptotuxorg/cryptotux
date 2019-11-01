@@ -1,4 +1,4 @@
-- name: Add user booby
+- name: Add user bobby
   user:
     name: bobby
     password: $6$WpKByh5EK/M$S8bYaMXZEJNROH/7pyuzlPOJ14SwJzn0DkPgveQAupxZs8IYenF3pPrXuuNBHFivAsHA9fjRoe/imXfYz/17y0

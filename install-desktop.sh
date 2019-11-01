@@ -7,7 +7,7 @@ sudo apt-get install -y virtualbox-guest-x11
 
 ## Clean and simplify (desktop only, optionnal)
 
-sudo apt-get -y purge ufw byobu geoip-database
+sudo apt-get -y purge ufw byobu geoip-database ## ! Don't do that on a production machine
 
 # > The following is useful when starting from a lubuntu-desktop install
 # sudo apt-get purge apparmor cups-daemon whoopsie pulseaudio-utils

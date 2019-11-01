@@ -9,17 +9,26 @@ Download -> http://cryptotux.org/
 
 ![screenshot](screenshot.png)
 
-## How to use it? The easy way
-* Install [virtualbox](https://virtualbox.org)
-* Download the desktop or server version on [cryptotux.org](https://cryptotux.org)
-* Click on the file or in "import appliance" in virtualbox
-* Launch from virtualbox
-* For the desktop version interact visually ! 
-* For the server version
-    Connect via ssh `ssh bobby@192.168.33.10`
-    Or have a preview at http://192.168.33.10:3030
+## How to use it? 
 
-For ease you can also sync a local folder, let's call it remote, and the internal folder of the machine with `sshfs bobby@cryptotux-server:/home/bobby remote`
+### The easy graphic way
+* Install [virtualbox](https://virtualbox.org)
+* Download the latest desktop ova version on [cryptotux.org](https://cryptotux.org)
+* Click on the file or in "import appliance" in virtualbox
+* Launch from virtualbox (green arrow)
+
+Keyboard can be changed by clicking on the icon at the bottom. Left click to go through default options: US, FR, ES, US Mac. Right click > keyboard layout handler allows you to add more options.
+
+![keyboard](images/keyboard.png)
+
+### The server option
+To launch only nodes, you can use the server only version.
+* Install [virtualbox](https://virtualbox.org)
+* Download the latest "desktop ova" version on [cryptotux.org](https://cryptotux.org)
+* Click on the file or in "import appliance" in virtualbox
+* Connect via ssh `ssh bobby@192.168.33.10`, or have a preview by opening a browser at http://192.168.33.10:3030
+
+For ease you can also sync a local folder, let's call it remote, and the internal user folder of the machine with `sshfs bobby@cryptotux-server:/home/bobby remote`
 
 Optionnaly, add cryptotux as known hosts (on Unix systems `echo '192.168.33.10 cryptotux' | sudo tee -a /etc/hosts`). You will then be able to connect with `ssh bobby@cryptotux`
 
@@ -39,7 +48,19 @@ We aim to provide a useful tool and meaningful project as a collaborative effort
 * [Suggested issues](https://github.com/cryptotuxorg/cryptotux/projects/1)
 * [To fork](https://github.com/cryptotuxorg/cryptotux/fork)
 
+Currently two versions of the scripts exist:
+
+* install-*.sh are bash installation scripts. They can be applied to a local install or a vagrant box
+* flavours/ contains ansible playbooks and several flavours of cryptotux
+
 ## Changelog
+### 0.5.2 > 01 nov 2019
+- Version bump: node, go
+- added jq
+
+### 0.5.1 > 08 oct 2019
+- Tiny updates I'm too lazy to describe
+
 ### 0.5.0 > 31 may 2019
 - Fully scripted desktop 
 - including java, sublime-text, artwork
@@ -102,7 +123,7 @@ We aim to provide a useful tool and meaningful project as a collaborative effort
 - Ethereum ppa and libraries
 - libssl1.0-dev
 
-### 0.0.1
+### 0.0.1 > Jun-2018
 - Utilities
 	build-essential libtool autotools-dev automake pkg-config libssl1.0-dev libevent-dev bsdmainutils python3 software-properties-common
 	libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev

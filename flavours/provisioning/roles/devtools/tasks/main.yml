@@ -9,7 +9,7 @@
     - htop
     - tig
     - tmux
-    - python-pip
+    - python-pip3
     - cowsay
     - build-essential
   become: true  
@@ -46,7 +46,7 @@
 
 - name: Add node repo
   apt_repository:
-    repo:  "deb http://deb.nodesource.com/node_10.x {{ ansible_lsb.codename }} main"
+    repo:  "deb http://deb.nodesource.com/node_12.x {{ ansible_lsb.codename }} main"
     state: present
     filename: node
     update_cache: yes
