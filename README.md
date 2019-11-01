@@ -14,8 +14,10 @@ Download -> http://cryptotux.org/
 * Download the desktop or server version on [cryptotux.org](https://cryptotux.org)
 * Click on the file or in "import appliance" in virtualbox
 * Launch from virtualbox
-* For the server version, it is best to connect via ssh `ssh bobby@192.168.33.10`
 * For the desktop version interact visually ! 
+* For the server version
+    Connect via ssh `ssh bobby@192.168.33.10`
+    Or have a preview at http://192.168.33.10:3030
 
 For ease you can also sync a local folder, let's call it remote, and the internal folder of the machine with `sshfs bobby@cryptotux-server:/home/bobby remote`
 

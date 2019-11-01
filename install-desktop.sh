@@ -7,7 +7,7 @@ sudo apt-get install -y virtualbox-guest-x11
 
 ## Clean and simplify (desktop only, optionnal)
 
-sudo apt-get purge ufw byobu geoip-database
+sudo apt-get -y purge ufw byobu geoip-database
 
 # > The following is useful when starting from a lubuntu-desktop install
 # sudo apt-get purge apparmor cups-daemon whoopsie pulseaudio-utils
@@ -28,7 +28,7 @@ wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 sudo apt-get install -y apt-transport-https
 sudo apt-get update
-#sudo apt-get install -y code
+sudo apt-get install -y code
 sudo apt-get install -y sublime-text
 
 ## Install Brave (desktop only)
@@ -73,7 +73,7 @@ Description=Text mode theme
 ModuleName=ubuntu-text
 
 [ubuntu-text]
-title=Cryptotux 0.5      
+title=Cryptotux       
 black=0x0078C2
 white=0xffffff
 brown=0x009DFD

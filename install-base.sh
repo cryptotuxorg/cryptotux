@@ -1,7 +1,8 @@
 #!/bin/bash -x
-export DEBIAN_FRONTEND=noninteractive #Prevent from accessing stdin, doesn't seem efficient
+export DEBIAN_FRONTEND=noninteractive #Prevent from accessing stdin, doesn't seem effective
 
 echo "##  BASE SCRIPT  ##"
+# This scripts creates an user bobby with full access
 
 ## Create user bobby
 adduser --quiet --disabled-password --shell /bin/bash --home /home/bobby --gecos "" bobby
