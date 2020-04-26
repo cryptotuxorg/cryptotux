@@ -46,7 +46,7 @@
 
 - name: Add node repo
   apt_repository:
-    repo:  "deb http://deb.nodesource.com/node_12.x {{ ansible_lsb.codename }} main"
+    repo:  "deb http://deb.nodesource.com/node_14.x {{ ansible_lsb.codename }} main"
     state: present
     filename: node
     update_cache: yes

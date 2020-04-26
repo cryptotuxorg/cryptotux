@@ -21,7 +21,7 @@ rm rustup.sh
 
 ## Node.js + installing packages locally
 cd 
-nodeVersion=12.x
+nodeVersion=14.x
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install -y nodejs
@@ -43,7 +43,7 @@ sudo apt-get update
 sudo apt-get install -y ethereum
 
 ## Install IPFS
-IPFSVersion=0.4.22
+IPFSVersion=0.5.0-rc4
 wget https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -53,7 +53,7 @@ cd
 rm -rf go-ipfs
 
 ## Install Go environment (for tendermint ...)
-goVersion=1.13.4
+goVersion=1.14.2
 wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go"$goVersion".linux-amd64.tar.gz 
 rm go"$goVersion".linux-amd64.tar.gz
