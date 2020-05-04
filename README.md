@@ -51,9 +51,22 @@ We aim to provide a useful tool and meaningful project as a collaborative effort
 Currently two versions of the scripts exist:
 
 * install-*.sh are bash installation scripts. They can be applied to a local install or a vagrant box
-* flavours/ contains ansible playbooks and several flavours of cryptotux
+* flavours/ contains Ansible playbooks and several flavours of cryptotux
 
 ## Changelog
+## TBR
+- Switched Bitcoin core from PPA to direct download (recommended safest way)
+- 
+## 0.5.4 > 5 apr 2020
+- Version bumps
+## 0.5.3 > 16 jan 2020
+- purge apport
+- added lxrandr
+- added IBM visual code plugin
+- Bookmarks:
+	- added bitcoin whitepaper, bitcoin studio
+	- removed ethfiddle
+- larger hard drive max size (7 to 20GB)
 ### 0.5.2 > 01 nov 2019
 - Version bump: node, go
 - added jq
@@ -111,7 +124,7 @@ Currently two versions of the scripts exist:
 - Installed
 	- Ganache-cli
 	- Chainpoint-cli   
-- Significantely lighter image
+- Significantly lighter image
 
 ### 0.0.3 > 25-Sep-2018
 - Solidity addon for Visual Code
@@ -135,5 +148,5 @@ Currently two versions of the scripts exist:
 
 ## Authors
 
-Xavier Lavayssiere (@xavierlava)
+Xavier Lavayssière (@xavierlava)
 

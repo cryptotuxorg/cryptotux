@@ -11,15 +11,17 @@ export DEBIAN_FRONTEND=noninteractive
 ## Install common development tools
 sudo apt-get update && sudo apt upgrade
 sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
-sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils #Not necessary for local installs
+sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils # Virtualbox interaction
 sudo apt-get install -y jq #useful json parser
 cd
+
+## Install Rust programming language tooling
 curl https://sh.rustup.rs -sSf > rustup.sh
 sh rustup.sh -y 
 echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
 rm rustup.sh
 
-## Node.js + installing packages locally
+## Node.js and configuration for installing global packages in userspace
 cd 
 nodeVersion=14.x
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
@@ -32,9 +34,18 @@ rm nodesource_setup.sh
 source ~/.bashrc
 
 ## Install bitcoin development related tools
-sudo add-apt-repository ppa:bitcoin/bitcoin
-sudo apt-get install -y bitcoind
-##2020.04 release:snap install bitcoin
+# PPA option (deprecated)
+    # sudo add-apt-repository ppa:bitcoin/bitcoin
+    # sudo apt-get install -y bitcoind
+# snap option. But snap 🤷
+    # snap install bitcoin
+# Direct download
+bitcoinCoreVersion=0.19.1 
+wget "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
+rm -rf bitcoin-$bitcoinCoreVersion/
+## TODO: Check gui dependencies
 
 ## Install Ethereum development nodes
 bash <(curl https://get.parity.io -L)
@@ -43,7 +54,7 @@ sudo apt-get update
 sudo apt-get install -y ethereum
 
 ## Install IPFS
-IPFSVersion=0.5.0-rc4
+IPFSVersion=0.5.0
 wget https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -79,14 +90,20 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker $USER
 
 ## Tutorials
+# Suggestions welcomed
 cd 
 mkdir Tutorials
 cd Tutorials
 
+# Great tutorial on bitcoinjs by Bitcoin Studio
 git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git
+# A simple Ethereum DApp example
 git clone https://github.com/Xalava/elemental-dapp.git
+# Cosmos SDK tutorial
 git clone https://github.com/cosmos/sdk-application-tutorial.git
+# This virtual machine (it is also a portable way to get assets for further configuration)
 git clone https://github.com/cryptotuxorg/cryptotux
+
 
 ## Configuration Preferences
 cd 

@@ -1,6 +1,6 @@
 #!/bin/bash -x
-echo ">>> Cleaning Script <<ls <"
-echo ">> Warning : Script designed for image release"
+echo ">>> Cleaning Script <<<"
+echo ">> Warning : Script designed for light image release, might be harsh for usual maintenance"
 sudo apt-get autoclean -y; 
 sudo apt-get -y clean; 
 sudo apt-get -y --purge autoremove;

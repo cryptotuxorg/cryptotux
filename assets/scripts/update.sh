@@ -7,5 +7,6 @@ bash <(curl https://get.parity.io -L); npm update -g
 echo ">> Update local repositories"
 cd /home/bobby/Tutorials
 for i in */.git; do ( echo "> $i ";cd $i/..; git pull;); done;
+# TODO : update tooling based on the new versions in cryptotux 
 cd 
 echo ">> Update done "

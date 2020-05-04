@@ -13,6 +13,7 @@ chown -R bobby:bobby /home/bobby/
 chown -R bobby:bobby /dataShare/
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config    
 service ssh reload
+# Simplification (don't do this at home) : remove password prompt for sudo
 echo '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ## Launching the main installation script as user bobby
