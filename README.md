@@ -11,36 +11,43 @@ Download -> http://cryptotux.org/
 
 ## How to use it? 
 
-### The easy graphic way
+### The easy visual way
 * Install [virtualbox](https://virtualbox.org)
-* Download the latest desktop ova version on [cryptotux.org](https://cryptotux.org)
+* Download the latest "desktop ova image" on [cryptotux.org](https://cryptotux.org)
 * Click on the file or in "import appliance" in virtualbox
-* Launch from virtualbox (green arrow)
+* Press "Start ➡️" on virtualbox 
 
-Keyboard can be changed by clicking on the icon at the bottom. Left click to go through default options: US, FR, ES, US Mac. Right click > keyboard layout handler allows you to add more options.
+Keyboard layout can be changed by clicking on the icon at the bottom. Left click to go through default options: US, FR, ES, US Mac. Right click and then "keyboard layout handler" to add more options.
 
 ![keyboard](images/keyboard.png)
 
-### The server option
-To launch only nodes, you can use the server only version.
+### The server launch
+To launch only nodes or tooling you can use the server version.
 * Install [virtualbox](https://virtualbox.org)
-* Download the latest "desktop ova" version on [cryptotux.org](https://cryptotux.org)
-* Click on the file or in "import appliance" in virtualbox
-* Connect via ssh `ssh bobby@192.168.33.10`, or have a preview by opening a browser at http://192.168.33.10:3030
+* Download the latest "server ova image" on [cryptotux.org](https://cryptotux.org)
+* Click on the file or in "import appliance ↶" in virtualbox
+* Connect via ssh `ssh bobby@192.168.33.10 -o IdentitiesOnly=yes` <!-- or have a preview by opening a browser at http://192.168.33.10:3030 -->
 
-For ease you can also sync a local folder, let's call it remote, and the internal user folder of the machine with `sshfs bobby@cryptotux-server:/home/bobby remote`
+For ease you can also sync a local folder, let's call it 'remote', and the internal user folder of the machine with `sshfs -o IdentitiesOnly=yes bobby@192.168.33.10:/home/bobby ~/remote`
 
-Optionnaly, add cryptotux as known hosts (on Unix systems `echo '192.168.33.10 cryptotux' | sudo tee -a /etc/hosts`). You will then be able to connect with `ssh bobby@cryptotux`
-
+Optionnaly, you can add cryptotux as known hosts (on Unix systems `echo '192.168.33.10 cryptotux' | sudo tee -a /etc/hosts`, you will then be able to connect with `ssh bobby@cryptotux`) or the following lines to the ssh config file, usually located on Unix systems at `~/.ssh/config`:
+```
+Host cryptotux
+   HostName 192.168.33.10
+   User bobby
+   IdentitiesOnly yes
+```
 ## To build from scratch
 
-* Install vagrant and virtualbox. On a debian or ubuntu system `sudo apt install vagrant virtualbox`
+* Install [vagrant](https://www.vagrantup.com/downloads.html) and virtualbox. 
 * To build and run the server version `vagrant up`
 * To connect to the server : `vagrant ssh`
 
 And voilà !
 
-* To build and run the desktop version `vagrant up cryptotux-desktop`
+* To build and run the desktop version `vagrant up desktop` 
+* Or run the command `cryptotux-desktop` within the default virtual machine, and reboot `sudo reboot`
+⚠️ desktop automated build is experimental
 
 ## Contribution
 We aim to provide a useful tool and meaningful project as a collaborative effort. The first objective is to offer a standard distribution for education and development. Suggestions, remarks, partnerships and pull requests are welcome. 
@@ -48,103 +55,11 @@ We aim to provide a useful tool and meaningful project as a collaborative effort
 * [Suggested issues](https://github.com/cryptotuxorg/cryptotux/projects/1)
 * [To fork](https://github.com/cryptotuxorg/cryptotux/fork)
 
-Currently two versions of the scripts exist:
+There are two sets of installation scripts:
 
 * install-*.sh are bash installation scripts. They can be applied to a local install or a vagrant box
 * flavours/ contains Ansible playbooks and several flavours of cryptotux
 
-## Changelog
-## TBR
-- Switched Bitcoin core from PPA to direct download (recommended safest way)
-- 
-## 0.5.4 > 5 apr 2020
-- Version bumps
-## 0.5.3 > 16 jan 2020
-- purge apport
-- added lxrandr
-- added IBM visual code plugin
-- Bookmarks:
-	- added bitcoin whitepaper, bitcoin studio
-	- removed ethfiddle
-- larger hard drive max size (7 to 20GB)
-### 0.5.2 > 01 nov 2019
-- Version bump: node, go
-- added jq
-
-### 0.5.1 > 08 oct 2019
-- Tiny updates I'm too lazy to describe
-
-### 0.5.0 > 31 may 2019
-- Fully scripted desktop 
-- including java, sublime-text, artwork
-- Smaller images
-- added ssh password access 
-
-### 0.4.6 > 9 may 2019
-- added brave browser
-- removed secondary npm packages
-- lighter image
-
-### 0.4.5 > 14 apr 2019
-- added emacs
-- updated go
-- cosmos sdk
-
-### 0.4.4 > 10 apr 2019
-- docker tooling
-- added rust & vim
-- better update script 
-
-### 0.4.3 > 9 apr 2019
-- Visual code added
-- updates
-
-### 0.4.2 > 8 apr 2019
-- fortune, tldr added
-
-### 0.4.1 > 22 jan 2019
-- bitcoin binaries & config
-- tutorials
-
-### 0.3 > 22 dec 2018
-- Added bleachit
-- Custom update scripts
-- bookmarks
-
-### 0.2
-- Added parity
-- Branding
-- upload optimization
-
-### 0.1.0
-- Ligher image and OS
-- added IPFS
-
-### 0.0.4 > 27-Sep-2018
-- Installed
-	- Ganache-cli
-	- Chainpoint-cli   
-- Significantly lighter image
-
-### 0.0.3 > 25-Sep-2018
-- Solidity addon for Visual Code
-- curl
-- metamask for firefox
-- node with user domain global folder (.npm-global)
-
-### 0.0.2 > 13-Jun-2018 
-- Ethereum ppa and libraries
-- libssl1.0-dev
-
-### 0.0.1 > Jun-2018
-- Utilities
-	build-essential libtool autotools-dev automake pkg-config libssl1.0-dev libevent-dev bsdmainutils python3 software-properties-common
-	libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
-	libminiupnpc-dev libzmq3-dev
-	libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler  
-- Bitcoin libraries
-	libdb4.8-dev libdb4.8++-dev
-- Virtualbox addons
 
 ## Authors
 
