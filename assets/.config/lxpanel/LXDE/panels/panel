@@ -3,26 +3,28 @@
 
 Global {
   edge=bottom
-  allign=left
+  align=left
   margin=0
   widthtype=percent
   width=100
   height=22
   transparent=1
   tintcolor=#000000
-  alpha=134
+  alpha=184
   setdocktype=1
   setpartialstrut=1
+  autohide=0
+  heightwhenhidden=0
   usefontcolor=1
   fontcolor=#FFFFF
   background=0
   backgroundfile=/home/bobby/.config/cryptotux-images/wallpaper.jpg
-  iconsize=22    
+  iconsize=22
 }
 Plugin {
   type=menu
   Config {
-    image=~/.config/cryptotux-images/menu-light.png
+    image=~/.cryptotux/images/menu-light.png
     system {
     }
     separator {
@@ -34,10 +36,10 @@ Plugin {
   }
 }
 Plugin {
-  type=launchtaskbar
+  type=launchbar
   Config {
     Button {
-      id=menu://applications/Accessories/pcmanfm.desktop
+      id=pcmanfm.desktop
     }
     Button {
       id=brave-browser.desktop
@@ -45,9 +47,9 @@ Plugin {
     Button {
       id=lxterminal.desktop
     }
-    FlatButton=0
-    GroupedTasks=1
-    UseSmallerIcons=-1
+    Button {
+      id=lxrandr.desktop
+    }
   }
 }
 Plugin {
@@ -55,7 +57,6 @@ Plugin {
   Config {
     Size=4
   }
-  expand=0
 }
 Plugin {
   type=pager
@@ -68,27 +69,31 @@ Plugin {
     Size=4
   }
 }
+Plugin { 
+  type=taskbar
+  expand=1
+  Config {
+    tooltips=1
+    IconsOnly=0
+    AcceptSkipPager=1
+    ShowIconified=1
+    ShowMapped=1
+    ShowAllDesks=0
+    UseMouseWheel=1
+    UseUrgencyHint=1
+    FlatButton=0
+    MaxTaskWidth=150
+    spacing=1
+  }
+}
 Plugin {
   type=tray
   Config {
   }
 }
 Plugin {
-  type=dclock
+  type=space
   Config {
-    ClockFmt=%R
-    TooltipFmt=%A %x
-    BoldFont=0
-    IconOnly=0
-    CenterText=0
-  }
-}
-Plugin {
-  type=launchbar
-  Config {
-    Button {
-      id=/usr/share/applications/lubuntu-logout.desktop
-    }
   }
 }
 Plugin {
@@ -98,5 +103,13 @@ Plugin {
     LayoutsList=us,fr,es,de
     VariantsList=,
     ToggleOpt=grp:shift_caps_toggle
+    PerWinLayout=0
+    DisplayType=0
+    KeepSysLayouts=0
+  }
+}
+Plugin {
+  type=space
+  Config {
   }
 }

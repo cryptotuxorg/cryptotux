@@ -9,13 +9,13 @@ echo "##  INSTALL SERVER SCRIPT  ##"
 export DEBIAN_FRONTEND=noninteractive
 
 ## Install common development tools
-sudo apt-get update && sudo apt upgrade
+sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
 sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils # Virtualbox interaction
-sudo apt-get install -y jq #useful json parser
-cd
+sudo apt-get install -y jq # Useful json parser
 
 ## Install Rust programming language tooling
+cd
 curl https://sh.rustup.rs -sSf > rustup.sh
 sh rustup.sh -y 
 echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
@@ -42,13 +42,17 @@ source ~/.bashrc
 # Direct download
 bitcoinCoreVersion=0.19.1 
 wget "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+# For development
+# cp "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" .
 tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
+wget "https://raw.githubusercontent.com/bitcoin/bitcoin/master/share/pixmaps/bitcoin128.png"
+install -m 0644 -D -t /usr/share/pixmaps/bitcoin128.png
 rm -rf bitcoin-$bitcoinCoreVersion/
-## TODO: Check gui dependencies
+rm "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
 
 ## Install Ethereum development nodes
-bash <(curl https://get.parity.io -L)
+# bash <(curl https://get.parity.io -L) # Divested and switched to OpenEthereum
 sudo add-apt-repository -y ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install -y ethereum
@@ -64,7 +68,7 @@ cd
 rm -rf go-ipfs
 
 ## Install Go environment (for tendermint ...)
-goVersion=1.14.2
+goVersion=1.14.3
 wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go"$goVersion".linux-amd64.tar.gz 
 rm go"$goVersion".linux-amd64.tar.gz
@@ -107,16 +111,60 @@ git clone https://github.com/cryptotuxorg/cryptotux
 
 ## Configuration Preferences
 cd 
-cp -R Tutorials/cryptotux/assets/.config/ .
-cp -R Tutorials/cryptotux/assets/.bitcoin/ .
-cp -R Tutorials/cryptotux/assets/scripts/ .
+# In prod to have an homogenous retrieval
+# cryptopath="Tutorials/cryptotux"
+# During development to have the lastest versions
+cryptopath="/vagrant"
+cp -R "${cryptopath}/assets/.config" .
+cp -R "${cryptopath}/assets/.bitcoin" .
+cp -R "${cryptopath}/assets/.cryptotux" .
+cp -R "${cryptopath}/assets/.local" .
+cp -R "${cryptopath}/assets/.themes" .
 
+cp "${cryptopath}/install-desktop.sh" .cryptotux/scripts/
+
+# Reduces shutdown speed in case of service failure
+sudo sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=10s/g' /etc/systemd/system.conf
+
+# Cryptotux commands
 echo '
-alias update-pkg="sudo apt-get update && sudo apt-get upgrade -y"
-alias update-all="bash ~/scripts/update.sh"
-alias update-clean="bash ~/scripts/clean.sh"' >> ~/.bashrc
-npm install -g tldr #Nice command line help for beginners
-tldr update
+alias cryptotux-update="source ~/.cryptotux/scripts/update.sh"
+alias cryptotux-clean="source ~/.cryptotux/scripts/clean.sh"
+alias cryptotux-versions="source ~/.cryptotux/scripts/versions.sh"
+alias cryptotux-desktop="bash ~/.cryptotux/scripts/install-desktop.sh"' >> ~/.bashrc
+
+#Nice command line help for beginners
+npm install -g tldr 
+echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
+/home/bobby/.npm-global/bin/tldr update
+
 sudo apt-get install -y cowsay 
 echo '(echo "Welcome to Cryptotux !"; )| cowsay -f turtle ' >> ~/.bashrc
 sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
+
+## Optimization attempt (potential break, security issues and dependencies)
+#  apparmor > necessary for docker anyway
+sudo apt-get purge -y \
+  snapd \
+  cloud-init \
+  multipath-tools \
+  packagekit \
+  apport \
+  cloud-guest-utils \
+  cloud-initramfs-copymods \
+  cloud-initramfs-dyn-netconf \
+  ubuntu-release-upgrader-core \
+  update-manager-core \
+  ufw \
+  unattended-upgrades \
+  apparmor
+sudo apt-get autoremove -y
+
+sudo service docker stop
+sudo service containerd stop
+sudo service rsyslogd stop
+
+## Last update
+sudo apt-get update && sudo apt-get upgrade -y
+sudo usermod -aG vboxsf bobby
+echo "## END OF INSTALL SERVER SCRIPT  ##"

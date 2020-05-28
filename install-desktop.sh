@@ -1,13 +1,16 @@
 #!/bin/bash -x
 
-echo "##  INSTALL DESKTOP SCRIPT  ##"
+echo -e '\033[1m ## INSTALL DESKTOP SCRIPT ## \033[0m'
 sudo apt-get update
-sudo apt-get install -y lubuntu-core --no-install-recommends
-sudo apt-get install -y virtualbox-guest-x11
+# Install xserver, lxde desktop, and minimal 
+sudo apt-get install -y --no-install-recommends \
+    xserver-xorg virtualbox-guest-x11 \
+    lxde lightdm lightdm-gtk-greeter\
+    gtk2-engines gnome-themes-extra dmz-cursor-theme
 
 ## Clean and simplify (desktop only, optionnal)
 
-sudo apt-get -y purge ufw byobu geoip-database ## ! Don't do that on a production machine
+# sudo apt-get -y purge ufw byobu geoip-database ## ! Don't do that on a production machine
 
 # > The following is useful when starting from a lubuntu-desktop install
 # sudo apt-get purge apparmor cups-daemon whoopsie pulseaudio-utils
@@ -20,40 +23,40 @@ sudo apt-get -y purge ufw byobu geoip-database ## ! Don't do that on a productio
 # sudo apt-get purge samba-libs
 
 ## Visual code & Sublime (desktop only) 
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-rm microsoft.gpg
-sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+cd
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 sudo apt-get install -y apt-transport-https
 sudo apt-get update
 sudo apt-get install -y code
 sudo apt-get install -y sublime-text
+rm packages.microsoft.gpg
 
 ## Install Brave (desktop only)
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-sudo sh -c 'echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com `lsb_release -sc` main" >> /etc/apt/sources.list.d/brave.list'
+echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 sudo apt-get update
-sudo apt-get install -y brave-browser brave-keyring 
+sudo apt-get install -y brave-browser 
 
 ## Java environment 
 sudo apt-get install -y default-jdk maven 
 
 ## Development tools
 sudo apt-get install -y emacs unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
-sudo apt-get install -y bitcoin-qt
 
 ## Wallpaper
-sudo cp /home/bobby/.config/cryptotux-images/wallpaper.jpg /usr/share/lubuntu/wallpapers/lubuntu-default-wallpaper.png
-# TODO: Probably cleaner option
+sudo cp /home/bobby/.cryptotux/images/wallpaper.jpg /etc/alternatives/desktop-background
 
 ## Log in directly to bobby's desktop
 sudo echo '[SeatDefaults]
 autologin-user=bobby
 autologin-user-timeout=0
-user-session=Lubuntu
-greeter-session=ligthtdm-gtk-greeter'| sudo tee  /etc/lightdm/lightdm.conf
+user-session=LXDE
+greeter-session=ligthtdm-gtk-greeter'| sudo tee /etc/lightdm/lightdm.conf
+
 
 ## Boot Cosmetics (optionnal)
 echo 'GRUB_DEFAULT=0
@@ -83,3 +86,15 @@ sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /e
 sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/default.plymouth
 
 sudo update-initramfs -u
+
+
+# Fix for some console apps launch xterm
+sudo ln -s /usr/bin/lxterminal /usr/bin/xterm
+
+sudo apt-get autoremove -y
+
+## Reboot
+echo -e '\033[1m ## END OF INSTALL DESKTOP SCRIPT - REBOOTING  ## \033[0m'
+sudo reboot
+
+#lxsession-logout --banner "/usr/share/lxde/images/logout-banner.png" --side=top
