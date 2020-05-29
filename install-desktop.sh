@@ -2,25 +2,35 @@
 
 echo -e '\033[1m ## INSTALL DESKTOP SCRIPT ## \033[0m'
 sudo apt-get update
-# Install xserver, lxde desktop, and minimal 
+
+## Install xserver, lxde desktop, and minimal 
 sudo apt-get install -y --no-install-recommends \
     xserver-xorg virtualbox-guest-x11 \
     lxde lightdm lightdm-gtk-greeter\
     gtk2-engines gnome-themes-extra dmz-cursor-theme
 
-## Clean and simplify (desktop only, optionnal)
+## Remove packages that are cloud and security oriented
+sudo apt-get purge -y \
+  ufw \
+  cloud-guest-utils \
+  cloud-initramfs-copymods \
+  cloud-initramfs-dyn-netconf \
+  cloud-init \
+  multipath-tools \
+  packagekit \
+  apparmor 
 
-# sudo apt-get -y purge ufw byobu geoip-database ## ! Don't do that on a production machine
+## Configuration Preferences 
+cd
+# Retrieve configuration files from this repo if not available yet
+[ -d " ~/Cryptotux-repository" ] && git clone https://github.com/cryptotuxorg/cryptotux ~/Cryptotux-repository
+# Use Vagrant shared folder if available for the latest version during dev or the github imported version
+[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Cryptotux-repository"
+# Copy desktop configuration files
+cp -R "${cryptopath}/assets/.config" .
+cp -R "${cryptopath}/assets/.local" .
+cp -R "${cryptopath}/assets/.themes" .
 
-# > The following is useful when starting from a lubuntu-desktop install
-# sudo apt-get purge apparmor cups-daemon whoopsie pulseaudio-utils
-# sudo apt-get purge ubuntu-release-upgrader-gtk update-manager update-notifier synaptic leafpad pavucontrol
-# sudo apt-get purge fonts-noto-cjk abiword abiword-common gnumeric audacious bluez
-# sudo apt-get purge xfburn guvcview sylpheed pidgin simple-scan xpad gnome mpv
-# sudo apt-get purge hunspell* pidgin-data humanity-icon-theme gnumeric-common qttranslations5-l10n  libsane1 hplib-data
-# sudo apt-get purge audacious-plugins audacious-plugins-data ffmpegthumbnailer galculator gnome-icon-theme gstreamer1.0-nice gstreamer1.0-plugins-bad gstreamer1.0-plugins-good libabiword-3.0 libmplex2-2.1-0 libfarstream-0.2-5 fcitx-data fcitx-modules
-# sudo apt-get purge cups cups-bsd cups-client cups-common cups-ppdc fonts-noto-color-emoji fonts-tibetan-machine gconf2-common geoclue-2.0 geoip-database gsfonts gucharmap iio-sensor-proxy libgoffice-0.10-10 libgoffice-0.10-10-common libpresage-data libpresage1v5 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 lubuntu-gtk-core lxlauncher printer-driver-gutenprint printer-driver-hpcups printer-driver-splix xfce4-power-manager xfce4-power-manager-data xfce4-power-manager-plugins pulseaudio
-# sudo apt-get purge samba-libs
 
 ## Visual code & Sublime (desktop only) 
 cd
@@ -35,20 +45,27 @@ sudo apt-get install -y code
 sudo apt-get install -y sublime-text
 rm packages.microsoft.gpg
 
+# To avoid menu dupliate entries
+sudo sed -i 's/Utility;//g' /usr/share/applications/code.desktop
+sudo sed -i 's/Utility;//g' /usr/share/applications/emacs.desktop
+sudo sed -i 's/Utility;/Development;/g' /usr/share/applications/vim.desktop
+sudo rm /usr/share/applications/emacs-term.desktop
+sudo rm /usr/share/applications/info.desktop
+
 ## Install Brave (desktop only)
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 sudo apt-get update
 sudo apt-get install -y brave-browser 
 
-## Java environment 
-sudo apt-get install -y default-jdk maven 
-
 ## Development tools
 sudo apt-get install -y emacs unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
 
-## Wallpaper
+## Adapt LXDE branding (Changes default, slightly dirty)
 sudo cp /home/bobby/.cryptotux/images/wallpaper.jpg /etc/alternatives/desktop-background
+# Used small image for compatibility - Other path to explore : lxsession-logout --banner "/usr/share/lxde/images/logout-banner.png" --side=top
+sudo cp /home/bobby/.cryptotux/images/menu-light.png /usr/share/lxde/images/logout-banner.png
+sudo cp /home/bobby/.cryptotux/images/menu-light.png /usr/share/lxde/images/lxde-icon.png
 
 ## Log in directly to bobby's desktop
 sudo echo '[SeatDefaults]
@@ -88,13 +105,11 @@ sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /e
 sudo update-initramfs -u
 
 
-# Fix for some console apps launch xterm
+# Fix for some console apps that launch xterm
 sudo ln -s /usr/bin/lxterminal /usr/bin/xterm
 
 sudo apt-get autoremove -y
 
 ## Reboot
 echo -e '\033[1m ## END OF INSTALL DESKTOP SCRIPT - REBOOTING  ## \033[0m'
-sudo reboot
-
-#lxsession-logout --banner "/usr/share/lxde/images/logout-banner.png" --side=top
+sudo reboot # Not ideal when using vagrant

@@ -1,0 +1,12 @@
+[Added Associations]
+text/x-matlab=sublime_text.desktop;
+application/json=sublime_text.desktop;
+image/png=gpicview.desktop;
+image/x-xpixmap=gpicview.desktop;
+
+[Default Applications]
+image/jpeg=gpicview.desktop;
+text/x-matlab=sublime_text.desktop
+application/json=sublime_text.desktop
+image/png=gpicview.desktop
+image/x-xpixmap=gpicview.desktop

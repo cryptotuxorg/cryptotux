@@ -6,7 +6,7 @@ vv=$(lsb_release -d)
 echo ${vv#"Description:"}
 
 echo -e "\n Languages"
-python -V
+# python -V # deprecated
 python3 -V
 go version
 rustc --version 

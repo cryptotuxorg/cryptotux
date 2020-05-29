@@ -8,6 +8,8 @@ npm update -g
 echo ">> Update local git repositories"
 cd /home/bobby/Tutorials
 for i in */.git; do ( echo "> $i ";cd $i/..; git pull;); done;
+cd ~/Cryptotux-respository
+git pull
 # TODO : update tooling based on the new versions in cryptotux 
 cd 
 echo ">> Update done "
