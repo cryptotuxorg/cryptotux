@@ -1,11 +1,14 @@
 # Changelog
-## 0.6.1 > TBR
+## 0.6.1 > 30 May 2020
 #### Users
 - [server] Addition of micro, a command line text editor
+- [server] Added web terminal 
 - [desktop] Default mimetypes for convenience 
+- [server] Welcome message with available commands
 #### Internal
 - install-server.sh  can now be safely executed on a server independently of Vagrant
 - Better script portability 
+- Additional scripts to install lightning, tendermint, Libra and Tezos (carthagenet)
 ## 0.6.0 > 27 May 2020
 #### Users
 - Extended to 40GB max sized harddrive. Allows testnets launch

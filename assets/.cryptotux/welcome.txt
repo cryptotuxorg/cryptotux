@@ -1,0 +1,15 @@
+
+
+As this is your first run, let me introduce available commands:
+    Blockchain nodes:       bitcoind (locally), bitcoin-cli, geth
+    Programming languages:  go, node, rust, gcc 
+    Text editors:           vim, nano, micro
+
+General commands:
+    cryptotux-update:       update everything 
+    cryptotux-desktop:      install a light desktop environment
+    cryptotux-versions:     display the current version of the main toolings
+    cryptotux-help:         display this help
+
+To install specific blockchains tools and nodes
+    cryptotux-lightning,cryptotux-tendermint, cryptotux-tezos, cryptotux-libra...

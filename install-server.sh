@@ -41,8 +41,7 @@ source ~/.bashrc
     # snap install bitcoin
 # Direct download
 bitcoinCoreVersion=0.19.1 
-if [-e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"]
-then
+if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" .
 else
@@ -120,6 +119,25 @@ sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
 rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
+## Web terminal
+ttydVersion=1.6.0
+wget https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
+chmod +x ttyd
+sudo mv ttyd /usr/local/bin
+sudo sh -c 'echo "[Unit]
+Description=Web based command line
+
+[Service]
+User=bobby
+ExecStart=/usr/local/bin/ttyd -p 3310 -u bobby bash
+WorkingDirectory=/home/bobby/
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/ttyd.service'
+sudo systemctl daemon-reload
+sudo systemctl enable ttyd
+sudo service ttyd start
+
 ## Tutorials
 # Suggestions welcomed
 cd 
@@ -137,9 +155,10 @@ git clone https://github.com/cosmos/sdk-application-tutorial.git Cosmos-sdk-tuto
 ## Configuration Preferences 
 cd
 # Retrieve configuration files from this repo
-git clone https://github.com/cryptotuxorg/cryptotux ~/Cryptotux-repository
+mkdir ~/Projects/
+git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
 # Use Vagrant shared folder if available for the latest version or the github imported version
-[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Cryptotux-repository"
+[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
 cp -R "${cryptopath}/assets/.bitcoin" .
 cp -R "${cryptopath}/assets/.cryptotux" .
 cp "${cryptopath}/install-desktop.sh" .cryptotux/scripts/
@@ -152,6 +171,13 @@ echo '
 alias cryptotux-update="source ~/.cryptotux/scripts/update.sh"
 alias cryptotux-clean="source ~/.cryptotux/scripts/clean.sh"
 alias cryptotux-versions="source ~/.cryptotux/scripts/versions.sh"
+alias cryptotux-help="cat .cryptotux/welcome.txt"
+
+alias cryptotux-tezos="source ~/.cryptotux/scripts/tezos.sh"
+alias cryptotux-libra="source ~/.cryptotux/scripts/libra.sh"
+alias cryptotux-tendermint="source ~/.cryptotux/scripts/tendermint.sh"
+alias cryptotux-lightning="source ~/.cryptotux/scripts/lightning.sh"
+
 alias cryptotux-desktop="bash ~/.cryptotux/scripts/install-desktop.sh"' >> ~/.bashrc
 
 #Nice command line help for beginners
@@ -160,8 +186,9 @@ echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
 /home/bobby/.npm-global/bin/tldr update
 
 sudo apt-get install -y cowsay 
-echo '(echo "Welcome to Cryptotux !"; )| cowsay -f turtle ' >> ~/.bashrc
+echo '(echo "Welcome to Cryptotux !"; )| /usr/games/cowsay -f turtle ' >> ~/.bashrc
 sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
+echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux-help && touch  ~/.cryptotux/greeted' >> ~/.bashrc
 
 ## Optimization attempt (potential security and dependencies issues)
 # Check if it is a local build, otherwise do nothign

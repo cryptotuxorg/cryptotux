@@ -2,7 +2,7 @@
 
 Cryptotux is a Linux image preconfigured with tools for crypto development and education.
 
-Cryptotux is currently supplied as .ova images that can be directly imported into Virtualbox (6.X+). 
+Cryptotux is currently supplied as .ova images that can be directly imported into Virtualbox (6.X+) and VMWare. 
 It is particularly suited for workshops. Username is *bobby*, password is *bricodeur*.
 
 ![screenshot](screenshot.png)
@@ -24,7 +24,8 @@ To launch only nodes or tooling you can use the server version.
 * Install [virtualbox](https://virtualbox.org)
 * Download the latest "Server image" on [cryptotux.org](https://cryptotux.org)
 * Click on the file or on "↶ import appliance" in virtualbox
-* Connect via ssh `ssh bobby@192.168.33.10 ` (add `-o IdentitiesOnly=yes` if you have many keys) <!-- or have a preview by opening a browser at http://192.168.33.10:3030 -->
+   * Connect via ssh `ssh bobby@192.168.33.10 ` (add `-o IdentitiesOnly=yes` if you have many keys) 
+   * Or open a browser at http://192.168.33.10:7681/ 
 
 For ease you can also sync a local folder, let's call it 'remote', and the internal user folder of the machine with `sshfs -o IdentitiesOnly=yes bobby@192.168.33.10:/home/bobby ~/remote`
 
