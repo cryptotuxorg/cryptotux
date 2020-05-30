@@ -9,10 +9,16 @@ echo "##  INSTALL SERVER SCRIPT  ##"
 export DEBIAN_FRONTEND=noninteractive
 
 ## Install common development tools
-sudo apt-get update && sudo apt-get upgrade
-sudo apt-get install -y curl git python3 vim python3-pip # Most likely already there
-sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils # Virtualbox interaction
-sudo apt-get install -y jq # Useful json parser
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install -y \
+    curl git python3 vim python3-pip \
+    jq  > /dev/null 2>&1 # Useful json parser
+
+if [[ $(sudo  dmidecode  | grep -i product | grep -i virtualbox ) ]] ; then
+    # Add Virtualbox additions 
+    sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils 
+fi
+
 
 ## Install Rust programming language tooling (Used for Libra)
 cd
@@ -47,7 +53,8 @@ if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz
 else
     # Import from bitcoincore servers. It might be slow
 	wget "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
-
+    # If shared folder is available, save for later
+    [[ -e "/vagrant/dataShare/" ]] && cp bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz /vagrant/dataShare/
 fi
 tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
@@ -84,7 +91,16 @@ rm -rf go-ipfs
 
 ## Install Go environment (Used for Tendermint, Cosmos, Hyperledger Fabrci and Libra)
 goVersion=1.14.3
-wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
+if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
+    # During development, import from a folder "dataShare" if available
+	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
+else
+    # Import from googlr servers.
+	wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
+    # If shared folder is available, save for later
+    [[ -e "/vagrant/dataShare/" ]] && cp go"$goVersion".linux-amd64.tar.gz /vagrant/dataShare/
+fi
+
 sudo tar -C /usr/local -xzf go"$goVersion".linux-amd64.tar.gz 
 rm go"$goVersion".linux-amd64.tar.gz
 
@@ -124,13 +140,14 @@ ttydVersion=1.6.0
 wget https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
 chmod +x ttyd
 sudo mv ttyd /usr/local/bin
-sudo sh -c 'echo "[Unit]
+# -E do not seem to transfert the current user to 'sh' but this shit does
+sudo USER=$USER sh -c 'echo "[Unit]
 Description=Web based command line
 
 [Service]
-User=bobby
-ExecStart=/usr/local/bin/ttyd -p 3310 -u bobby bash
-WorkingDirectory=/home/bobby/
+User=$USER
+ExecStart=/usr/local/bin/ttyd -p 3310 -u $USER bash
+WorkingDirectory=/home/$USER/
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/ttyd.service'
@@ -183,30 +200,34 @@ alias cryptotux-desktop="bash ~/.cryptotux/scripts/install-desktop.sh"' >> ~/.ba
 #Nice command line help for beginners
 npm install -g tldr 
 echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
-/home/bobby/.npm-global/bin/tldr update
+/home/$USER/.npm-global/bin/tldr update
 
 sudo apt-get install -y cowsay 
 echo '(echo "Welcome to Cryptotux !"; )| /usr/games/cowsay -f turtle ' >> ~/.bashrc
 sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
 echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux-help && touch  ~/.cryptotux/greeted' >> ~/.bashrc
 
-## Optimization attempt (potential security and dependencies issues)
-# Check if it is a local build, otherwise do nothign
-if [ -d "/vagrant/assets" ] 
-then
+## Optimization (potential security and dependencies issues)
+# In a virtual environement, remove packages that are cloud and security oriented
+# Prior approach : if [ -d "/vagrant/assets" ] 
+if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
 sudo apt-get purge -y \
   snapd \
   apport \
   ubuntu-release-upgrader-core \
   update-manager-core \
   unattended-upgrades \
-
-sudo service docker stop
-sudo service containerd stop
-sudo service rsyslogd stop
+  ufw \
+  cloud-guest-utils \
+  cloud-initramfs-copymods \
+  cloud-initramfs-dyn-netconf \
+  cloud-init \
+  multipath-tools \
+  packagekit \
+  apparmor 
 fi
 
 ## Last update
 sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y
-sudo usermod -aG vboxsf bobby # A reboot might be necessary 
+sudo usermod -aG vboxsf $USER # A reboot might be necessary 
 echo "## END OF INSTALL SERVER SCRIPT  ##"

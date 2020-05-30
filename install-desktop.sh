@@ -5,32 +5,35 @@ sudo apt-get update
 
 ## Install xserver, lxde desktop, and minimal 
 sudo apt-get install -y --no-install-recommends \
-    xserver-xorg virtualbox-guest-x11 \
+    xserver-xorg \
     lxde lightdm lightdm-gtk-greeter\
     gtk2-engines gnome-themes-extra dmz-cursor-theme
 
-## Remove packages that are cloud and security oriented
-sudo apt-get purge -y \
-  ufw \
-  cloud-guest-utils \
-  cloud-initramfs-copymods \
-  cloud-initramfs-dyn-netconf \
-  cloud-init \
-  multipath-tools \
-  packagekit \
-  apparmor 
+# In a virtual environment, stop services likely to be less useful for desktop workshops
+if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
+  sudo service docker stop
+  sudo service containerd stop
+  sudo service rsyslogd stop
+  # Install virtualbox addition for X!!
+  sudo apt-get install -y --no-install-recommends \
+    virtualbox-guest-x11 
+fi
 
 ## Configuration Preferences 
 cd
 # Retrieve configuration files from this repo if not available yet
-[ -d " ~/Cryptotux-repository" ] && git clone https://github.com/cryptotuxorg/cryptotux ~/Cryptotux-repository
+if [[ ! -d ~/Projects/Cryptotux ]]; then
+  mkdir -p ~/Projects
+  git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
+fi
 # Use Vagrant shared folder if available for the latest version during dev or the github imported version
-[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Cryptotux-repository"
+[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
 # Copy desktop configuration files
 cp -R "${cryptopath}/assets/.config" .
+# Correct username in configfiles if current user is not bobby
+[[ bobby != $USER ]] && find .config -type f -name "*" -print0 | xargs -0 sed -i "s/bobby/$USER/g"
 cp -R "${cryptopath}/assets/.local" .
 cp -R "${cryptopath}/assets/.themes" .
-
 
 ## Visual code & Sublime (desktop only) 
 cd
@@ -62,17 +65,17 @@ sudo apt-get install -y brave-browser
 sudo apt-get install -y emacs unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
 
 ## Adapt LXDE branding (Changes default, slightly dirty)
-sudo cp /home/bobby/.cryptotux/images/wallpaper.jpg /etc/alternatives/desktop-background
+sudo cp /home/$USER/.cryptotux/images/wallpaper.jpg /etc/alternatives/desktop-background
 # Used small image for compatibility - Other path to explore : lxsession-logout --banner "/usr/share/lxde/images/logout-banner.png" --side=top
-sudo cp /home/bobby/.cryptotux/images/menu-light.png /usr/share/lxde/images/logout-banner.png
-sudo cp /home/bobby/.cryptotux/images/menu-light.png /usr/share/lxde/images/lxde-icon.png
+sudo cp /home/$USER/.cryptotux/images/menu-light.png /usr/share/lxde/images/logout-banner.png
+sudo cp /home/$USER/.cryptotux/images/menu-light.png /usr/share/lxde/images/lxde-icon.png
 
-## Log in directly to bobby's desktop
-sudo echo '[SeatDefaults]
-autologin-user=bobby
+## Log in directly to $USER's desktop
+sudo -E echo "[SeatDefaults]
+autologin-user=$USER
 autologin-user-timeout=0
 user-session=LXDE
-greeter-session=ligthtdm-gtk-greeter'| sudo tee /etc/lightdm/lightdm.conf
+greeter-session=ligthtdm-gtk-greeter"| sudo tee /etc/lightdm/lightdm.conf
 
 
 ## Boot Cosmetics (optionnal)

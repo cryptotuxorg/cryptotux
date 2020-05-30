@@ -47,9 +47,6 @@ Plugin {
     Button {
       id=lxterminal.desktop
     }
-    Button {
-      id=lxrandr.desktop
-    }
   }
 }
 Plugin {
@@ -89,6 +86,19 @@ Plugin {
 Plugin {
   type=tray
   Config {
+  }
+}
+Plugin {
+  type=space
+  Config {
+  }
+}
+Plugin {
+  type=launchbar
+  Config {
+    Button {
+      id=lxrandr.desktop
+    }
   }
 }
 Plugin {
