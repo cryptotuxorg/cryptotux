@@ -8,6 +8,17 @@ echo "##  INSTALL SERVER SCRIPT  ##"
 
 export DEBIAN_FRONTEND=noninteractive
 
+## Common functions
+latest_release () {
+    # Retrieve latest release name from github
+    release=$(curl --silent "https://api.github.com/repos/$1/releases/latest" | jq -r .tag_name )
+    # If first char is "v", remove it
+    [[ $(echo $release | cut -c 1) = "v" ]] && release=$(echo $release | cut -c 2-)
+    # If empty or null ("ull"), use provided default
+    [[ -z $release || $release = "ull" && -n $2 ]] && release=$2
+    echo $release
+}
+
 ## Install common development tools
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y \
@@ -29,7 +40,7 @@ rm rustup.sh
 
 ## Node.js and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
 cd 
-nodeVersion=14.x
+nodeVersion=14.x # We force future LTS version
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install -y nodejs
@@ -40,13 +51,15 @@ rm nodesource_setup.sh
 source ~/.bashrc
 
 ## Install bitcoin development related tools
-# PPA option (deprecated)
+# 1/ PPA option (deprecated):
     # sudo add-apt-repository ppa:bitcoin/bitcoin
     # sudo apt-get install -y bitcoind
-# snap option. But snap 🤷
+# 2/ snap option. But snap 🤷:
     # snap install bitcoin
-# Direct download
-bitcoinCoreVersion=0.19.1 
+# 3/ Direct download:
+# Check for the latest release on github, otherwise use the latest known version
+bitcoinCoreVersion=$(latest_release bitcoin/bitcoin 0.20.0) 
+# Download bitcoin core from the serveur or the local dataShare folder
 if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" .
@@ -80,7 +93,7 @@ if [ ! -x "$(command -v geth)" ] ; then
 fi
 
 ## Install IPFS
-IPFSVersion=0.5.0
+IPFSVersion=$(latest_release ipfs/go-ipfs 0.5.1) 
 wget https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -90,7 +103,7 @@ cd
 rm -rf go-ipfs
 
 ## Install Go environment (Used for Tendermint, Cosmos, Hyperledger Fabrci and Libra)
-goVersion=1.14.3
+goVersion=1.14.4
 if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
@@ -128,7 +141,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker $USER
 
 ## A modern command line text editor 
-microVersion=2.0.4 
+microVersion=$(latest_release zyedidia/micro 2.0.4) 
 wget "https://github.com/zyedidia/micro/releases/download/v$microVersion/micro-$microVersion-linux64-static.tar.gz"
 tar xzf "micro-$microVersion-linux64-static.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
@@ -136,7 +149,7 @@ rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
 ## Web terminal
-ttydVersion=1.6.0
+ttydVersion=$(latest_release tsl0922/ttyd 1.6.0) 
 wget https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
 chmod +x ttyd
 sudo mv ttyd /usr/local/bin
