@@ -47,6 +47,11 @@ sudo apt-get update
 sudo apt-get install -y code
 sudo apt-get install -y sublime-text
 rm packages.microsoft.gpg
+code --install-extension AzBlockchain.azure-blockchain
+code --install-extension JuanBlanco.solidity
+code --install-extension R3.vscode-corda
+code --install-extension redhat.java
+code --install-extension ms-python.python
 
 # To avoid menu dupliate entries
 sudo sed -i 's/Utility;//g' /usr/share/applications/code.desktop

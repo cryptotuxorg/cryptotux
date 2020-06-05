@@ -24,4 +24,4 @@ service ssh reload
 echo '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Launching the main installation script as user bobby
-su -c "source /vagrant/install-server.sh" bobby
+su -c "bash -x /vagrant/install-server.sh" bobby

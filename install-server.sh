@@ -38,15 +38,17 @@ sh rustup.sh -y
 echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
 rm rustup.sh
 
-## Node.js and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
+## Node.js,npm and yarn and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
 cd 
 nodeVersion=14.x # We force future LTS version
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
-sudo apt-get install -y nodejs
-mkdir ~/.npm-global
+sudo apt-get install -y nodejs yarn
+mkdir -p ~/.npm-global
 npm config set prefix '~/.npm-global'
-echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.bashrc
+echo "export PATH=~/.npm-global/bin:~/.config/yarn/global:\$PATH" >> ~/.bashrc
 rm nodesource_setup.sh
 source ~/.bashrc
 
@@ -108,7 +110,7 @@ if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
 else
-    # Import from googlr servers.
+    # Import from google servers.
 	wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
     # If shared folder is available, save for later
     [[ -e "/vagrant/dataShare/" ]] && cp go"$goVersion".linux-amd64.tar.gz /vagrant/dataShare/
@@ -126,7 +128,10 @@ source ~/.bashrc
 sudo apt-get install -y default-jdk maven 
 
 ## Docker tooling (Used in Hyperledger Fabric and Quorum )
-sudo apt-get install -y ca-certificates \
+dockerComposeVersion=$(latest_release docker/compose)
+sudo apt-get install -y \
+    apt-transport-https\
+    ca-certificates \
     gnupg-agent \
     software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -136,7 +141,7 @@ sudo add-apt-repository \
    stable"
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0-rc4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/$dockerComposeVersion/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker $USER
 
@@ -184,6 +189,8 @@ git clone https://github.com/cosmos/sdk-application-tutorial.git Cosmos-sdk-tuto
 
 ## Configuration Preferences 
 cd
+# A package manager for edgy versions 
+sudo apt-get install -y flatpak 
 # Retrieve configuration files from this repo
 mkdir ~/Projects/
 git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux

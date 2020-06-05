@@ -25,7 +25,7 @@ To launch only nodes or tooling you can use the server version.
 * Download the latest "Server image" on [cryptotux.org](https://cryptotux.org)
 * Click on the file or on "↶ import appliance" in virtualbox
    * Connect via ssh `ssh bobby@192.168.33.10 ` (add `-o IdentitiesOnly=yes` if you have many keys) 
-   * Or open a browser at http://192.168.33.10:7681/ 
+   * Or open a browser at http://192.168.33.10:3310/ 
 
 For ease you can also sync a local folder, let's call it 'remote', and the internal user folder of the machine with `sshfs -o IdentitiesOnly=yes bobby@192.168.33.10:/home/bobby ~/remote`
 
@@ -37,12 +37,14 @@ Host cryptotux
    IdentitiesOnly yes
 ```
 
+NB: If you use an X server you can access to the desktop via `ssh -X ...` too
+
 ### Installation on top of an existing configuration
-If you have Ubuntu installed (on a server, a laptop or on Windows Linux Subsystem) you can apply directly the install script to have the basic nodes and command line tooling. Don't do this on a production machine
+You can install Cryptotux on an existing Ubuntu local install, on a server or in Windows Linux Subsystem (WSL1 and WSL2). 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/cryptotuxorg/cryptotux/master/install-server.sh)
+bash <(curl -sL https://cryptotux.org/install)
 ```
-It has been tested on Ubuntu 20.04. It should work on any Ubuntu based distribution and it can work on Debian 10 with minor changes (docker repository and adding current user to /etc/sudoers).
+It has been tested on Ubuntu 20.04. It should work on any Ubuntu based distribution and it can work on Debian 10 with minor changes (docker repository and adding current user to /etc/sudoers). Don't do this on a production machine.
 
 ### To build images from scratch
 
@@ -62,7 +64,7 @@ We aim to provide a useful tool and meaningful project as a collaborative effort
 
 There are two sets of installation scripts:
 
-* install-*.sh are bash installation scripts. They can be applied to a local installm a server or a vagrant box
+* install-*.sh are bash installation scripts. They can be applied to a local install, a server or a vagrant box
 * flavours/ contains Ansible playbooks and several flavours of cryptotux
 
 Provided ova images are built from the vagrantfile using bash scripts.

@@ -1,4 +1,13 @@
 # Changelog
+## 0.6.2 > 5 June 2020
+#### Users
+- [server] flatpak and yarn added
+- [desktop] visual code extensions added
+#### Internal
+- install script can be launched by any user
+- automatic GitHub release version when available
+- explicit commands during build
+
 ## 0.6.1 > 30 May 2020
 #### Users
 - [server] Addition of micro, a command line text editor
