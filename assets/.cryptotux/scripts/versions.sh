@@ -5,7 +5,7 @@ echo -e "\n System"
 vv=$(lsb_release -d)
 echo ${vv#"Description:"}
 echo "Kernel" $(uname -r)
-
+echo "Cryptotux $CRYPTOTUX_VERSION"
 echo -e "\n Languages"
 # python -V # deprecated
 gcc --version | head -n 1 

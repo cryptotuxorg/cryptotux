@@ -54,7 +54,7 @@ It has been tested on Ubuntu 20.04. It should work on any Ubuntu based distribut
 
 And voilà !
 
-To build and run the desktop version `vagrant up desktop` or run the command `cryptotux-desktop` within the default virtual machine. This desktop build is meant for educational purposes.
+To build and run the desktop version `vagrant up desktop` or run the command `cryptotux desktop` within the default virtual machine. This desktop build is meant for educational purposes.
 
 ## Contribution
 We aim to provide a useful tool and meaningful project as a collaborative effort. The first objective is to offer a standard distribution for education and development. Suggestions, remarks, partnerships and pull requests are welcome. 

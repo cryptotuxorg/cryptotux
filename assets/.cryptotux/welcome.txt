@@ -1,15 +1,16 @@
 
-
-As this is your first run, let me introduce available commands:
-    Blockchain nodes:       bitcoind (locally), bitcoin-cli, geth
+Available commands
+    Blockchain nodes:       bitcoind (preconfigured locally), bitcoin-cli, geth
     Programming languages:  go, node, rust, gcc 
+    Package managers:       npm, yarn, cargo, docker
     Text editors:           vim, nano, micro
 
-General commands:
-    cryptotux-update:       update everything 
-    cryptotux-desktop:      install a light desktop environment
-    cryptotux-versions:     display the current version of the main toolings
-    cryptotux-help:         display this help
+`cryptotux` or `cx` command allows you to configure and update this installation
+    cx update       update everything 
+    cx desktop      install a light desktop environment
+    cx versions     display the current version of the main toolings
+    cx help         display this help
 
-To install specific blockchains tools and nodes
-    cryptotux-lightning,cryptotux-tendermint, cryptotux-tezos, cryptotux-libra...
+    cx XXX          install a specific network tooling and nodes (lightning, tendermint, tezos, libra... )
+    cx list         list available networks 
+

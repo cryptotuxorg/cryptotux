@@ -7,6 +7,7 @@ echo "##  INSTALL SERVER SCRIPT  ##"
 # Contributions are welcome
 
 export DEBIAN_FRONTEND=noninteractive
+export CRYPTOTUX_VERSION=0.7
 
 ## Common functions
 latest_release () {
@@ -67,13 +68,14 @@ if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz
 	cp "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" .
 else
     # Import from bitcoincore servers. It might be slow
-	wget "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+	wget -q "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
     # If shared folder is available, save for later
-    [[ -e "/vagrant/dataShare/" ]] && cp bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz /vagrant/dataShare/
+    [[ -e "/vagrant/dataShare/" ]] && sudo cp bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz /vagrant/dataShare/
 fi
 tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+# TODO: add verification
 sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
-wget "https://raw.githubusercontent.com/bitcoin/bitcoin/master/share/pixmaps/bitcoin128.png"
+wget -q "https://raw.githubusercontent.com/bitcoin/bitcoin/master/share/pixmaps/bitcoin128.png"
 sudo cp bitcoin128.png /usr/share/pixmaps/
 rm bitcoin128.png
 rm -rf bitcoin-$bitcoinCoreVersion/
@@ -87,7 +89,7 @@ sudo apt-get install -y ethereum
 # If it failed, install binaries directly
 if [ ! -x "$(command -v geth)" ] ; then
     gethVersion=geth-alltools-linux-amd64-1.9.14-6d74d1e5
-    wget https://gethstore.blob.core.windows.net/builds/$gethVersion.tar.gz
+    wget -q https://gethstore.blob.core.windows.net/builds/$gethVersion.tar.gz
     tar xzf $gethVersion.tar.gz
     sudo install -m 0755 -o root -g root -t /usr/local/bin $gethVersion/*
     rm -rf $gethVersion
@@ -96,7 +98,7 @@ fi
 
 ## Install IPFS
 IPFSVersion=$(latest_release ipfs/go-ipfs 0.5.1) 
-wget https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
+wget -q https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 cd go-ipfs
@@ -111,9 +113,9 @@ if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
 	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
 else
     # Import from google servers.
-	wget https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
+	wget -q https://dl.google.com/go/go"$goVersion".linux-amd64.tar.gz
     # If shared folder is available, save for later
-    [[ -e "/vagrant/dataShare/" ]] && cp go"$goVersion".linux-amd64.tar.gz /vagrant/dataShare/
+    [[ -e "/vagrant/dataShare/" ]] && sudo cp go"$goVersion".linux-amd64.tar.gz /vagrant/dataShare/
 fi
 
 sudo tar -C /usr/local -xzf go"$goVersion".linux-amd64.tar.gz 
@@ -147,7 +149,7 @@ sudo usermod -a -G docker $USER
 
 ## A modern command line text editor 
 microVersion=$(latest_release zyedidia/micro 2.0.4) 
-wget "https://github.com/zyedidia/micro/releases/download/v$microVersion/micro-$microVersion-linux64-static.tar.gz"
+wget -q "https://github.com/zyedidia/micro/releases/download/v$microVersion/micro-$microVersion-linux64-static.tar.gz"
 tar xzf "micro-$microVersion-linux64-static.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
 rm -rf micro-$microVersion/
@@ -155,7 +157,7 @@ rm "micro-$microVersion-linux64-static.tar.gz"
 
 ## Web terminal
 ttydVersion=$(latest_release tsl0922/ttyd 1.6.0) 
-wget https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
+wget -q https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
 chmod +x ttyd
 sudo mv ttyd /usr/local/bin
 # -E do not seem to transfert the current user to 'sh' but this shit does
@@ -186,13 +188,10 @@ git clone https://github.com/Xalava/elemental-dapp.git Ethereum-elemental-dapp
 # Cosmos SDK tutorial
 git clone https://github.com/cosmos/sdk-application-tutorial.git Cosmos-sdk-tutorial
 
-
 ## Configuration Preferences 
 cd
-# A package manager for edgy versions 
-sudo apt-get install -y flatpak 
 # Retrieve configuration files from this repo
-mkdir ~/Projects/
+mkdir -p ~/Projects/
 git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
 # Use Vagrant shared folder if available for the latest version or the github imported version
 [ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
@@ -205,17 +204,12 @@ sudo sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=10s/g' /etc/syst
 
 # Cryptotux commands
 echo '
-alias cryptotux-update="source ~/.cryptotux/scripts/update.sh"
-alias cryptotux-clean="source ~/.cryptotux/scripts/clean.sh"
-alias cryptotux-versions="source ~/.cryptotux/scripts/versions.sh"
-alias cryptotux-help="cat .cryptotux/welcome.txt"
-
-alias cryptotux-tezos="source ~/.cryptotux/scripts/tezos.sh"
-alias cryptotux-libra="source ~/.cryptotux/scripts/libra.sh"
-alias cryptotux-tendermint="source ~/.cryptotux/scripts/tendermint.sh"
-alias cryptotux-lightning="source ~/.cryptotux/scripts/lightning.sh"
-
-alias cryptotux-desktop="bash ~/.cryptotux/scripts/install-desktop.sh"' >> ~/.bashrc
+function cryptotux {
+    [ -e ~/.cryptotux/scripts/$1.sh ] && bash ~/.cryptotux/scripts/$1.sh || cat ~/.cryptotux/welcome.txt
+}
+alias cx="cryptotux"
+complete -W "$( echo $(ls .cryptotux/scripts/ | rev | cut -c 4- | rev))" cx cryptotux
+' >> ~/.bashrc
 
 #Nice command line help for beginners
 npm install -g tldr 
@@ -223,9 +217,13 @@ echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
 /home/$USER/.npm-global/bin/tldr update
 
 sudo apt-get install -y cowsay 
-echo '(echo "Welcome to Cryptotux !"; )| /usr/games/cowsay -f turtle ' >> ~/.bashrc
+echo '(echo "Welcome to Cryptotux !"; )| /usr/games/cowsay -f turtle ' >> ~/.profile
 sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
-echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux-help && touch  ~/.cryptotux/greeted' >> ~/.bashrc
+echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux help && touch  ~/.cryptotux/greeted' >> ~/.profile
+# Simplify ssh display
+sudo chmod -x /etc/update-motd.d/*
+sudo sh -c 'echo "echo" >> /etc/update-motd.d/50-landscape-sysinfo'
+sudo chmod +x /etc/update-motd.d/50-landscape-sysinfo
 
 ## Optimization (potential security and dependencies issues)
 # In a virtual environement, remove packages that are cloud and security oriented
@@ -248,6 +246,7 @@ sudo apt-get purge -y \
 fi
 
 ## Last update
-sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y
+sudo apt-get update && sudo apt-get upgrade -y 
+sudo apt-get autoremove -y
 sudo usermod -aG vboxsf $USER # A reboot might be necessary 
 echo "## END OF INSTALL SERVER SCRIPT  ##"
