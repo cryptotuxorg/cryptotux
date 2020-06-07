@@ -1,5 +1,8 @@
 #!/bin/bash
 
+### Tendermint ###
+# Assumes base go install from the main script
+
 echo export GO111MODULE=on >> ~/.bash_profile
 mkdir -p $GOPATH/src/github.com/tendermint
 cd $GOPATH/src/github.com/tendermint

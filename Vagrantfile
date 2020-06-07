@@ -1,10 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure("2") do |config|
 
   config.vm.box = "ubuntu/focal64"
@@ -41,9 +37,11 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   # By default, current folder is shared with /vagrant
   # config.vm.synced_folder "./dataShare", "/dataShare/", create: true
+
   # Potential bugfix for ssh connection and speeds up building during development
   # https://github.com/hashicorp/vagrant/issues/9834
-  # config.ssh.insert_key = false
+  # However activating it requires the password at vagrant ssh
+  config.ssh.insert_key = false
   
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
@@ -60,7 +58,9 @@ Vagrant.configure("2") do |config|
   
   # Install basic configuration
   # Creates bobby user and launch install-server.sh as bobby
-  config.vm.provision :shell, :path => "install-base.sh" 
+  config.vm.provision "shell",
+    inline: "/bin/bash -eux /vagrant/install-base.sh"
+  # config.vm.provision :shell, :path => "install-base.sh" 
   
   config.vm.network "private_network", ip: "192.168.33.10"
   

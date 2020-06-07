@@ -1,5 +1,7 @@
+#!/bin/bash -x
+
 ### Bitcoin ###
-# Assumes node and regtest configuration from main script
+# Assumes node with regtest configuration from main script
 
 B="\033[1m"
 N="\033[0m"

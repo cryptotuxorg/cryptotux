@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+### Desktop ###
+# Meant to be run on top of the main script.  
+
 echo -e '\033[1m ## INSTALL DESKTOP SCRIPT ## \033[0m'
 sudo apt-get update
 
@@ -25,6 +28,10 @@ cd
 if [[ ! -d ~/Projects/Cryptotux ]]; then
   mkdir -p ~/Projects
   git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
+else 
+  cd ~/Projects/Cryptotux
+  git pull
+  cd
 fi
 # Use Vagrant shared folder if available for the latest version during dev or the github imported version
 [ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"

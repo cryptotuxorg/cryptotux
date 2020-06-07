@@ -1,3 +1,5 @@
+#!/bin/bash -x
+
 ### Lightning ###
 # Assumes Bitcoin node and regtest configuration from main script
 
@@ -84,7 +86,7 @@ restlisten=0.0.0.0:8081
 ''' > nodeLena/lnd.conf
 cat ~/.lnd/lnd.conf >> nodeLena/lnd.conf
 # Create Naori
-mkdir -p ~/nodeNaori/
+mkdir -p nodeNaori/
 cat ~/.lnd/lnd.conf >> nodeNaori/lnd.conf
 echo '''
 ; Naori Node

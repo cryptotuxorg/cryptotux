@@ -259,25 +259,24 @@ sudo chmod +x /etc/update-motd.d/50-landscape-sysinfo
 # In a virtual environement, remove packages that are cloud and security oriented
 # Prior approach : if [ -d "/vagrant/assets" ] 
 if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
-sudo apt-get purge -y \
-  snapd \
-  apport \
-  ubuntu-release-upgrader-core \
-  update-manager-core \
-  unattended-upgrades \
-  ufw
-sudo apt-get purge -y \
-  cloud-guest-utils \
-  cloud-initramfs-copymods \
-  cloud-initramfs-dyn-netconf \
-  cloud-init \
-  multipath-tools \
-  packagekit \
-  apparmor 
+    sudo apt-get purge -y \
+        snapd \
+        apport \
+        ubuntu-release-upgrader-core \
+        update-manager-core \
+        unattended-upgrades \
+        ufw
+    sudo apt-get purge -y \
+        cloud-guest-utils \
+        cloud-initramfs-copymods \
+        cloud-initramfs-dyn-netconf \
+        cloud-init \
+        multipath-tools \
+        packagekit \
+        apparmor 
+    sudo apt-get autoremove -y
+    #Add current user to vbox group, a reboot might be necessary
+    sudo usermod -aG vboxsf $USER
 fi
 
-## Last update
-sudo apt-get update && sudo apt-get upgrade -y 
-sudo apt-get autoremove -y
-sudo usermod -aG vboxsf $USER # A reboot might be necessary 
 echo "## END OF INSTALL SERVER SCRIPT  ##"

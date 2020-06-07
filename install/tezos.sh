@@ -1,4 +1,9 @@
 #!/bin/bash
+
+
+### Tezos ###
+# Assumes base docker install from the main script
+
 tezosHome="~/Projects/Tezos"
 mkdir -p $tezosHome
 cd $tezosHome
