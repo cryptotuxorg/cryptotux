@@ -1,7 +1,14 @@
 # Changelog
-## 0.6.2 > 5 June 2020
+## 0.7.0 > TBR
 #### Users
-- [server] flatpak and yarn added
+- added bitcoin and lightning two node tutorial configuration
+- 
+#### Internal
+- cleaner `cryptotux`/`cx` command
+
+## 0.6.2 > 7 June 2020
+#### Users
+- [server] yarn added
 - [desktop] visual code extensions added
 #### Internal
 - install script can be launched by any user

@@ -20,9 +20,10 @@ wget -q https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion
 gpg --status-fd 1 --verify Electrum-$electrumVersion.tar.gz.asc Electrum-$electrumVersion.tar.gz 2>/dev/null | grep -q 'GOODSIG' || echo -e "$B Error in Electrum signature$N"
 # Install
 python3 -m pip install --user Electrum-$electrumVersion.tar.gz
-export PATH=$PATH:$HOME/.local/bin
+echo "export PATH=$PATH:$HOME/.local/bin" > ~/.bashrc
+source ~/.bashrc
 rm Electrum-$electrumVersion*
-echo -e "Electrum added, available via $B electrum$N and graphically"
+echo -e ">  Electrum added, available via $B electrum$N and graphically"
 
 ## Bitcoin local network tutorial
 cd  ~/.bitcoin/
@@ -68,7 +69,7 @@ alias bitcoin-cli-Bob="bitcoin-cli -datadir=$BobDir";
 ' >> ~/.bashrc
 source ~/.bashrc
 
-echo -e "Nodes$B Alice$N and$B Bob$N have been preconfigured, using respectively ports 8331 and 8332"
-echo -e "You can launch node Alice using $B bitcoind-Alice$N and connect with $B bitcoin-cli-Alice$N (connecting via 8321)"
-echo -e "similarly with Bob. Add \`-daemon\` to regain control of the console"
-echo -e "Both should with the original node \"Tux\" launched with $B bitcoind$N "
+echo -e "> Nodes$B Alice$N and$B Bob$N have been preconfigured, using respectively ports 8331 and 8332"
+echo -e "  You can launch node Alice using $B bitcoind-Alice$N and connect with $B bitcoin-cli-Alice$N (connecting via 8321)"
+echo -e "  similarly with Bob. Add \`-daemon\` to regain control of the console"
+echo -e "  Both should with the original node \"Tux\" launched with $B bitcoind$N "

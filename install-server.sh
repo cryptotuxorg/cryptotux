@@ -80,6 +80,26 @@ sudo cp bitcoin128.png /usr/share/pixmaps/
 rm bitcoin128.png
 rm -rf bitcoin-$bitcoinCoreVersion/
 rm "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+mkdir -p ~/.bitcoin
+echo '
+# Add to user agent
+uacomment=TuTux
+txindex=1
+
+# Local network for testing
+regtest=1
+
+# Accept JSON-RPC commands
+server=1
+rest=1
+
+# Define access
+rpcuser=bobby
+rpcpassword=bricodeur
+rpcallowip=127.0.0.1
+
+# NB: default ports on regtest are 18443 RPC and 18444 P2P
+' > ~/.bitcoin/bitcoin.conf
 
 ## Install Ethereum development nodes
 # bash <(curl https://get.parity.io -L) # Divested and switched to OpenEthereum
@@ -127,7 +147,7 @@ echo "export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH" >> ~/.bashrc
 source ~/.bashrc
 
 ## Java environment (used in Corda)
-sudo apt-get install -y default-jdk maven 
+sudo apt-get install -y --no-install-recommends default-jdk maven 
 
 ## Docker tooling (Used in Hyperledger Fabric and Quorum )
 dockerComposeVersion=$(latest_release docker/compose)
@@ -195,9 +215,10 @@ mkdir -p ~/Projects/
 git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
 # Use Vagrant shared folder if available for the latest version or the github imported version
 [ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
-cp -R "${cryptopath}/assets/.bitcoin" .
+# Copy of the configuration local folder
 cp -R "${cryptopath}/assets/.cryptotux" .
-cp "${cryptopath}/install-desktop.sh" .cryptotux/scripts/
+# Install scripts are added to this local folder. They are separated for development readability
+cp -R "${cryptopath}/install/" .cryptotux/
 
 # Reduces shutdown speed in case of service failure (Quick and dirty approach)
 sudo sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=10s/g' /etc/systemd/system.conf
@@ -205,11 +226,20 @@ sudo sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=10s/g' /etc/syst
 # Cryptotux commands
 echo '
 function cryptotux {
-    [ -e ~/.cryptotux/scripts/$1.sh ] && bash ~/.cryptotux/scripts/$1.sh || cat ~/.cryptotux/welcome.txt
+    if [ -e ~/.cryptotux/scripts/$1.sh ] ; then
+        bash ~/.cryptotux/scripts/$1.sh 
+    else 
+        if [ -e ~/.cryptotux/install/$1.sh ] ; then
+            bash ~/.cryptotux/install/$1.sh
+        else
+            cat ~/.cryptotux/welcome.txt
+        fi
+    fi
 }
 alias cx="cryptotux"
-complete -W "$( echo $(ls .cryptotux/scripts/ | rev | cut -c 4- | rev))" cx cryptotux
+complete -W "$( { ls .cryptotux/scripts/; ls .cryptotux/install/; }| rev | cut -c 4- | rev )" cx cryptotux
 ' >> ~/.bashrc
+echo "export CRYPTOTUX_VERSION=$CRYPTOTUX_VERSION" >>  ~/.bashrc
 
 #Nice command line help for beginners
 npm install -g tldr 
@@ -235,7 +265,8 @@ sudo apt-get purge -y \
   ubuntu-release-upgrader-core \
   update-manager-core \
   unattended-upgrades \
-  ufw \
+  ufw
+sudo apt-get purge -y \
   cloud-guest-utils \
   cloud-initramfs-copymods \
   cloud-initramfs-dyn-netconf \

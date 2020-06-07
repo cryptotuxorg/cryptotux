@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
     # The desktop version is accessible from the host at the following IP address
     # desktop.vm.network "private_network", ip: "192.168.33.11"
     desktop.vm.provision "shell", inline: <<-SHELL
-      su -c "source /vagrant/assets/.cryptotux/scripts/desktop.sh" bobby
+      su -c "source /vagrant/install/desktop.sh" bobby
     SHELL
   end
 

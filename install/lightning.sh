@@ -21,7 +21,7 @@ unzip eclair-node-$eclairVersion-$eclairTag-bin.zip
 sudo install -m 0755 -o root -g root -t /usr/local/bin/ eclair-node-$eclairVersion-$eclairTag/bin/*
 sudo install -m 0755 -o root -g root -t /usr/local/lib/ eclair-node-$eclairVersion-$eclairTag/lib/*
 mkdir -p .eclair
-# 
+
 echo '
 # Bitcoin daemon related configuration
 eclair.chain=regtest
