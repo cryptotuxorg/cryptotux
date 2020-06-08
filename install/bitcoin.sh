@@ -22,7 +22,7 @@ wget -q https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion
 gpg --status-fd 1 --verify Electrum-$electrumVersion.tar.gz.asc Electrum-$electrumVersion.tar.gz 2>/dev/null | grep -q 'GOODSIG' || echo -e "$B Error in Electrum signature$N"
 # Install
 python3 -m pip install --user Electrum-$electrumVersion.tar.gz
-echo "export PATH=$PATH:$HOME/.local/bin" > ~/.bashrc
+echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
 source ~/.bashrc
 rm Electrum-$electrumVersion*
 echo -e ">  Electrum added, available via $B electrum$N and graphically"

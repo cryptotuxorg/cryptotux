@@ -4,6 +4,7 @@ Available commands
     Programming languages:  go, node, rust, gcc 
     Package managers:       npm, yarn, cargo, docker
     Text editors:           vim, nano, micro
+    Help:                   tldr XXX > Simple help on how to use a command
 
 `cryptotux` or `cx` command allows you to configure and update this installation
     cx update       update everything 

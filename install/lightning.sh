@@ -42,7 +42,7 @@ eclair.api.password="bricodeur"
 echo 'alias eclair-node="eclair-node.sh";
 ' >> ~/.bashrc
 source .bashrc
-echo -e " > Eclair Lightning node installed and available at $B eclair-node$N and $B eclair-cli$N"
+echo -e "> Eclair Lightning node installed and available at $B eclair-node$N and $B eclair-cli$N"
 rm eclair-node-$eclairVersion-$eclairTag-bin.zip
 rm -rf eclair-node-$eclairVersion-$eclairTag
 

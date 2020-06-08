@@ -237,7 +237,7 @@ function cryptotux {
     fi
 }
 alias cx="cryptotux"
-complete -W "$( { ls .cryptotux/scripts/; ls .cryptotux/install/; }| rev | cut -c 4- | rev )" cx cryptotux
+complete -W "$( { ls ~/.cryptotux/scripts/; ls ~/.cryptotux/install/; }| rev | cut -c 4- | rev )" cx cryptotux
 ' >> ~/.bashrc
 echo "export CRYPTOTUX_VERSION=$CRYPTOTUX_VERSION" >>  ~/.bashrc
 
@@ -247,8 +247,13 @@ echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
 /home/$USER/.npm-global/bin/tldr update
 
 sudo apt-get install -y cowsay 
-echo '(echo "Welcome to Cryptotux !"; )| /usr/games/cowsay -f turtle ' >> ~/.profile
+echo '(echo -e "\e[0;36m Welcome to Cryptotux ! \e[0m"; )| /usr/games/cowsay -f turtle' >> ~/.profile
 sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
+# Customised prompt (ocean themed)
+# PS1='\n${debian_chroot:+($debian_chroot)}\[\033[00;36m\]\u\[\033[00;90m\]@\[\033[00;32m\]\h\[\033[00;90m\]:\[\033[00;36m\]\w\[\033[00;90m\]$\[\033[00m\] '
+sed -i '/PS1/c\
+PS1="\\n${debian_chroot:+($debian_chroot)}\\[\\033[00;36m\\]\\u\\[\\033[00;90m\\]@\\[\\033[00;32m\\]\\h\\[\\033[00;90m\\]:\\[\\033[00;36m\\]\\w\\[\\033[00;90m\\]$\\[\\033[00m\\] "
+' ~/.bashrc
 echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux help && touch  ~/.cryptotux/greeted' >> ~/.profile
 # Simplify ssh display
 sudo chmod -x /etc/update-motd.d/*
