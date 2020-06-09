@@ -26,19 +26,28 @@ sudo apt-get install -y \
     curl git python3 vim python3-pip \
     jq  > /dev/null 2>&1 # Useful json parser
 
+## WSL specific (alternatively uname -a)
+if grep -q Microsoft /proc/version; then
+    echo "Thanks for trying Cryptotux on Windows !"
+    echo "Make sure to use WSL2 or read the documentation"
+fi
+
+## Add Virtualbox additions 
 if [[ $(sudo  dmidecode  | grep -i product | grep -i virtualbox ) ]] ; then
-    # Add Virtualbox additions 
     sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils 
 fi
 
 
 ## Install Rust programming language tooling (Used for Libra)
 cd
-curl https://sh.rustup.rs -sSf > rustup.sh
-sh rustup.sh -y 
-echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
-rm rustup.sh
-
+if [ ! -x "$(command -v rustc)" ] ; then
+    curl https://sh.rustup.rs -sSf > rustup.sh
+    sh rustup.sh -y 
+    echo "export PATH=$HOME/.cargo/bin:\$PATH" >> ~/.bashrc
+    rm rustup.sh
+else
+    rustup update
+fi
 ## Node.js,npm and yarn and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
 cd 
 nodeVersion=14.x # We force future LTS version

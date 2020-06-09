@@ -17,7 +17,7 @@ It is particularly suited for workshops. Username is *bobby*, password is *brico
 
 Keyboard layout, and screen resolution, can be changed by clicking on the icons at the bottom. Left click the flag to go through default options: US, FR, ES, US Mac. Right click and then "keyboard layout handler" to add more options.
 
-![keyboard](images/keyboard.png)
+![keyboard](doc/images/keyboard.png)
 
 ### Server launch with virtualbox
 To launch only nodes or tooling you can use the server version.
@@ -40,11 +40,20 @@ Host cryptotux
 NB: If you use an X server you can access to the desktop via `ssh -X ...` too
 
 ### Installation on top of an existing configuration
-You can install Cryptotux on an existing Ubuntu local install, on a server or in Windows Linux Subsystem (WSL1 and WSL2). 
+You can install Cryptotux on an existing Ubuntu local install or on a server.
 ```bash
 bash <(curl -sL https://cryptotux.org/install)
 ```
 It has been tested on Ubuntu 20.04. It should work on any Ubuntu based distribution and it can work on Debian 10 with minor changes (docker repository and adding current user to /etc/sudoers). Don't do this on a production machine.
+
+### Installation in Windows Subsystem for Linux
+1. Install and activate [WSL **2**](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+2. In the Microsoft Store, install Ubuntu 20.04 LTS
+4. Launch Ubuntu from the menu and type in
+```bash
+bash -x <(curl -sL https://cryptotux.org/install)
+```
+It is advisable to extend the `sudo` password delay first. You might need to press enter occasionally.
 
 ### To build images from scratch
 
