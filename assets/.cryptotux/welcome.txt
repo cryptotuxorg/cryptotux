@@ -6,12 +6,11 @@ Available commands
     Text editors:           vim, nano, micro
     Help:                   tldr XXX > Simple help on how to use a command
 
-`cryptotux` or `cx` command allows you to configure and update this installation
+'cryptotux' (or 'cx') command allows you to configure and update this installation
     cx update       update everything 
     cx desktop      install a light desktop environment
     cx versions     display the current version of the main toolings
     cx help         display this help
 
-    cx XXX          install a specific network tooling and nodes (lightning, tendermint, tezos, libra... )
+    cx XXX          install a specific network tooling and nodes
     cx list         list available networks 
-

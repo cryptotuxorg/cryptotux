@@ -4,6 +4,12 @@
 # Meant to be run on top of the main script.  
 
 echo -e '\033[1m ## INSTALL DESKTOP SCRIPT ## \033[0m'
+## WSL specific (alternatively uname -a)
+if grep -q Microsoft /proc/version; then
+    echo "Installing the desktop in WSL might require additionnal configuration"
+    echo "It is not recommended in WSL1"
+fi
+
 sudo apt-get update
 
 ## Install xserver, lxde desktop, and minimal 
@@ -42,7 +48,7 @@ cp -R "${cryptopath}/assets/.config" .
 cp -R "${cryptopath}/assets/.local" .
 cp -R "${cryptopath}/assets/.themes" .
 
-## Visual code & Sublime (desktop only) 
+## Text editors and dev libraries: Emacs, Visual code & Sublime (desktop only) 
 cd
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
@@ -51,14 +57,18 @@ wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 sudo apt-get install -y apt-transport-https
 sudo apt-get update
-sudo apt-get install -y code
-sudo apt-get install -y sublime-text
+sudo apt-get install -y \
+  code \
+  sublime-text \
+  emacs \
+  unzip \
+  libdb-dvagranev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
 rm packages.microsoft.gpg
-code --install-extension AzBlockchain.azure-blockchain
+# code --install-extension AzBlockchain.azure-blockchain
 code --install-extension JuanBlanco.solidity
-code --install-extension R3.vscode-corda
-code --install-extension redhat.java
-code --install-extension ms-python.python
+# code --install-extension R3.vscode-corda
+# code --install-extension redhat.java
+# code --install-extension ms-python.python
 
 # To avoid menu dupliate entries
 sudo sed -i 's/Utility;//g' /usr/share/applications/code.desktop
@@ -72,9 +82,6 @@ curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 sudo apt-get update
 sudo apt-get install -y brave-browser 
-
-## Development tools
-sudo apt-get install -y emacs unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
 
 ## Adapt LXDE branding (Changes default, slightly dirty)
 sudo cp /home/$USER/.cryptotux/images/wallpaper.jpg /etc/alternatives/desktop-background
@@ -109,8 +116,8 @@ ModuleName=ubuntu-text
 
 [ubuntu-text]
 title=Cryptotux       
-black=0x0078C2
-white=0xffffff
+black=0x000000
+white=0x00FFFF
 brown=0x009DFD
 blue=0x00182C' | sudo tee /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth
 
