@@ -109,17 +109,17 @@ sudo update-grub
 
 sudo apt-get install -y plymouth-label
 sudo mkdir  /usr/share/plymouth/themes/cryptotux-text/
-echo '[Plymouth Theme]
+echo "[Plymouth Theme]
 Name=Cryptotux Text
 Description=Text mode theme 
 ModuleName=ubuntu-text
 
 [ubuntu-text]
-title=Cryptotux       
+title=Cryptotux $CRYPTOTUX_VERSION      
 black=0x000000
 white=0x00FFFF
 brown=0x009DFD
-blue=0x00182C' | sudo tee /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth
+blue=0x00182C" | sudo tee /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth
 
 sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/text.plymouth
 sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/default.plymouth

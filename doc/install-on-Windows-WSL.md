@@ -1,6 +1,6 @@
 ## 1. Install Windows Subsystem for Linux 
 
-Open a Powershell in **admin mode**
+Open Powershell in **admin mode**
 ```Powershell
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 ```
