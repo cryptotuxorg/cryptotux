@@ -1,10 +1,12 @@
 # Changelog
-## 0.7.0 > TBR
+## 0.7.0 > 17 june 2020
 #### Users
-- added bitcoin and lightning two node tutorial configuration
-- 
+- [common] added bitcoin and lightning two node tutorial configuration
+- [common] cosmos script
 #### Internal
 - cleaner `cryptotux`/`cx` command
+- install folder with scripts
+- Windows Subsystem for Linux install command and testing
 
 ## 0.6.2 > 7 June 2020
 #### Users
