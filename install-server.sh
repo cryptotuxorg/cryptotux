@@ -214,8 +214,6 @@ cd Tutorials
 git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git
 # A simple Ethereum DApp example
 git clone https://github.com/Xalava/elemental-dapp.git Ethereum-elemental-dapp
-# Cosmos SDK tutorial
-git clone https://github.com/cosmos/sdk-application-tutorial.git Cosmos-sdk-tutorial
 
 ## Configuration Preferences 
 cd
