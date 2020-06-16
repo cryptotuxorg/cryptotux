@@ -204,6 +204,45 @@ sudo systemctl daemon-reload
 sudo systemctl enable ttyd
 sudo service ttyd start
 
+## Login indication and boot cosmetic for virtual environments
+if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
+    # Console login greeter
+    echo "Cryptotux $CRYPTOTUX_VERSION - \\l
+
+    User is \"bobby\", password is \"bricodeur\"
+    " | sudo tee /etc/issue | sudo tee /etc/issue.net
+
+    # Silent launch
+    echo 'GRUB_DEFAULT=0
+    GRUB_TIMEOUT=0
+    GRUB_RECORDFAIL_TIMEOUT=0
+    GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+    GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=0 splash "
+    GRUB_CMDLINE_LINUX=""' |sudo tee /etc/default/grub.d/10-local-settings.cfg
+    sudo rm /etc/default/grub.d/50-cloudimg-settings.cfg
+    sudo update-grub
+
+    # Plymouth and theme
+    sudo apt-get install -y plymouth-label
+    sudo mkdir  /usr/share/plymouth/themes/cryptotux-text/
+    echo "[Plymouth Theme]
+    Name=Cryptotux Text
+    Description=Text mode theme 
+    ModuleName=ubuntu-text
+
+    [ubuntu-text]
+    title=Cryptotux $CRYPTOTUX_VERSION      
+    black=0x000000
+    white=0x00FFFF
+    brown=0x009DFD
+    blue=0x00182C" | sudo tee /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth
+
+    sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/text.plymouth
+    sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/default.plymouth
+
+    sudo update-initramfs -u
+fi
+
 ## Tutorials
 # Suggestions welcomed
 cd 

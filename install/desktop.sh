@@ -62,7 +62,7 @@ sudo apt-get install -y \
   sublime-text \
   emacs \
   unzip \
-  libdb-dvagranev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
+  libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev
 rm packages.microsoft.gpg
 # code --install-extension AzBlockchain.azure-blockchain
 code --install-extension JuanBlanco.solidity
@@ -70,7 +70,7 @@ code --install-extension JuanBlanco.solidity
 # code --install-extension redhat.java
 # code --install-extension ms-python.python
 
-# To avoid menu dupliate entries
+# To avoid menu duplicate entries
 sudo sed -i 's/Utility;//g' /usr/share/applications/code.desktop
 sudo sed -i 's/Utility;//g' /usr/share/applications/emacs.desktop
 sudo sed -i 's/Utility;/Development;/g' /usr/share/applications/vim.desktop
@@ -97,41 +97,11 @@ user-session=LXDE
 greeter-session=ligthtdm-gtk-greeter"| sudo tee /etc/lightdm/lightdm.conf
 
 
-## Boot Cosmetics (optionnal)
-echo 'GRUB_DEFAULT=0
-GRUB_TIMEOUT=0
-GRUB_RECORDFAIL_TIMEOUT=0
-GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
-GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=0 splash "
-GRUB_CMDLINE_LINUX=""' |sudo tee /etc/default/grub.d/10-local-settings.cfg
-sudo rm /etc/default/grub.d/50-cloudimg-settings.cfg
-sudo update-grub
-
-sudo apt-get install -y plymouth-label
-sudo mkdir  /usr/share/plymouth/themes/cryptotux-text/
-echo "[Plymouth Theme]
-Name=Cryptotux Text
-Description=Text mode theme 
-ModuleName=ubuntu-text
-
-[ubuntu-text]
-title=Cryptotux $CRYPTOTUX_VERSION      
-black=0x000000
-white=0x00FFFF
-brown=0x009DFD
-blue=0x00182C" | sudo tee /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth
-
-sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/text.plymouth
-sudo ln -sf /usr/share/plymouth/themes/cryptotux-text/cryptotux-text.plymouth /etc/alternatives/default.plymouth
-
-sudo update-initramfs -u
-
-
 # Fix for some console apps that launch xterm
 sudo ln -s /usr/bin/lxterminal /usr/bin/xterm
 
 sudo apt-get autoremove -y
 
 ## Reboot
-echo -e '\033[1m ## END OF INSTALL DESKTOP SCRIPT - REBOOTING  ## \033[0m'
-sudo reboot # Not ideal when using vagrant
+echo -e '\033[1m ## END OF INSTALL DESKTOP SCRIPT ## \033[0m'
+echo "Reboot or launch with startx"
