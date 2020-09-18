@@ -1,16 +1,19 @@
-
-Available commands
-    Blockchain nodes:       bitcoind (preconfigured locally), bitcoin-cli, geth
-    Programming languages:  go, node, rust, gcc 
+\033[1mAvailable programs \033[0m 
+ 
+    Blockchain nodes:       bitcoind \033[90m(regtest)\033[0m, bitcoin-cli, geth
+    Programming languages:  go, node, rust, gcc, python3
     Package managers:       npm, yarn, cargo, docker
     Text editors:           vim, nano, micro
-    Help:                   tldr XXX > Simple help on how to use a command
+    Simple help:            tldr \033[90mXXX\033[0m 
 
-'cryptotux' (or 'cx') command allows you to configure and update this installation
-    cx update       update everything 
-    cx desktop      install a light desktop environment
-    cx versions     display the current version of the main toolings
-    cx help         display this help
+\033[1mMaintenance using the\033[36m cryptotux \033[0m\033[1m(\033[36mcx\033[0m\033[1m) command \033[0m
 
-    cx XXX          install a specific network tooling and nodes
-    cx list         list available networks 
+    cx update     update everything 
+    cx versions   display the current version of the main toolings
+    cx help       display this help
+
+\033[1mInstall additional tools \033[0m
+
+    cx desktop    install a light desktop environment
+    cx list       list available additional networks (tezos, libra...)
+    cx \033[90mXXX\033[0m        install a specific network tooling and nodes

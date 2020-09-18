@@ -25,6 +25,7 @@ sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y \
     curl git python3 vim python3-pip \
     jq  > /dev/null 2>&1 # Useful json parser
+echo "export PATH=$HOME/.local/bin:\$PATH" >> ~/.bashrc
 
 ## WSL specific (alternatively uname -a)
 if grep -q Microsoft /proc/version; then
@@ -184,6 +185,34 @@ sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
 rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
+## Modern and easy encryption tool 
+ageVersion=$(latest_release FiloSottile/age 1.0.0-beta4) 
+wget -q "https://github.com/FiloSottile/age/releases/download/v$ageVersion/age-v$ageVersion-linux-amd64.tar.gz"
+tar xzf "age-v$ageVersion-linux-amd64.tar.gz"
+sudo install -m 0755 -o root -g root -t /usr/local/bin age-v$ageVersion/age
+rm -rf age-v$ageVersion/
+rm "age-v$ageVersion-linux-amd64.tar.gz"
+
+## Modern terminal file manager (cool addition, but complex installation that might break in future releases)
+cd
+git clone https://github.com/sebastiencs/icons-in-terminal.git
+cd icons-in-terminal
+./install-autodetect.sh 
+./install
+cd 
+rm -rf icons-in-terminal
+# Old 3.0 version is available at sudo apt install nnn
+cd 
+nnnVersion=$(latest_release jarun/nnn 3.4) 
+wget -q "https://github.com/jarun/nnn/releases/download/v$nnnVersion/nnn-v$nnnVersion.tar.gz"
+tar xzf "nnn-v$nnnVersion.tar.gz"
+cd nnn-$nnnVersion
+sudo apt-get install -y pkg-config libncursesw5-dev libreadline-dev
+sudo make strip install O_ICONS=1
+cd
+rm -rf nnn-$nnnVersion/
+rm "nnn-v$nnnVersion.tar.gz"
+
 ## Web terminal
 ttydVersion=$(latest_release tsl0922/ttyd 1.6.1) 
 wget -q https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
@@ -253,6 +282,8 @@ cd Tutorials
 git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git
 # A simple Ethereum DApp example
 git clone https://github.com/Xalava/elemental-dapp.git Ethereum-elemental-dapp
+# Another Ethereum example. Tutorial at https://medium.com/@austin_48503/programming-decentralized-money-300bacec3a4f
+git clone https://github.com/austintgriffith/scaffold-eth
 
 ## Configuration Preferences 
 cd
@@ -278,7 +309,7 @@ function cryptotux {
         if [ -e ~/.cryptotux/install/$1.sh ] ; then
             bash ~/.cryptotux/install/$1.sh
         else
-            cat ~/.cryptotux/welcome.txt
+            bash ~/.cryptotux/install/help.sh
         fi
     fi
 }
@@ -287,20 +318,26 @@ complete -W "$( { ls ~/.cryptotux/scripts/; ls ~/.cryptotux/install/; }| rev | c
 ' >> ~/.bashrc
 echo "export CRYPTOTUX_VERSION=$CRYPTOTUX_VERSION" >>  ~/.bashrc
 
-#Nice command line help for beginners
+# Nice command line help for beginners
 npm install -g tldr 
 echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
 /home/$USER/.npm-global/bin/tldr update
 
+
+
+# Pure fun and style 
 sudo apt-get install -y cowsay 
-echo '(echo -e "\e[0;36m Welcome to Cryptotux ! \e[0m"; )| /usr/games/cowsay -f turtle' >> ~/.profile
+echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux turtle && touch ~/.cryptotux/greeted' >> ~/.profile
 sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
 # Customised prompt (ocean themed)
 # PS1='\n${debian_chroot:+($debian_chroot)}\[\033[00;36m\]\u\[\033[00;90m\]@\[\033[00;32m\]\h\[\033[00;90m\]:\[\033[00;36m\]\w\[\033[00;90m\]$\[\033[00m\] '
 sed -i '/PS1/c\
 PS1="\\n${debian_chroot:+($debian_chroot)}\\[\\033[00;36m\\]\\u\\[\\033[00;90m\\]@\\[\\033[00;32m\\]\\h\\[\\033[00;90m\\]:\\[\\033[00;36m\\]\\w\\[\\033[00;90m\\]$\\[\\033[00m\\] "
 ' ~/.bashrc
-echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux help && touch  ~/.cryptotux/greeted' >> ~/.profile
+
+# Display cryptotux help at every connection
+echo 'cryptotux help' >> ~/.profile
+
 # Simplify ssh display
 sudo chmod -x /etc/update-motd.d/*
 sudo sh -c 'echo "echo" >> /etc/update-motd.d/50-landscape-sysinfo'
