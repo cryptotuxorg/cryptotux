@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-echo "##  INSTALL SERVER SCRIPT  ##"
+echo "##  INSTALL CRYPTOTUX 🐢 SERVER SCRIPT  ##"
 # This script installs common development tools and major blockchain networks nodes
 # The script can be run on a fresh ubuntu server install as a user, and will potentially work on any debian installation
 # Each section, denoted with  ##, is relatively independant from the context
@@ -15,8 +15,8 @@ latest_release () {
     release=$(curl --silent "https://api.github.com/repos/$1/releases/latest" | jq -r .tag_name )
     # If first char is "v", remove it
     [[ $(echo $release | cut -c 1) = "v" ]] && release=$(echo $release | cut -c 2-)
-    # If empty or null ("ull"), use provided default
-    [[ -z $release || $release = "ull" && -n $2 ]] && release=$2
+    # If empty or null, use provided default
+    [[ -z $release || $release = "null" && -n $2 ]] && release=$2
     echo $release
 }
 
@@ -70,7 +70,7 @@ source ~/.bashrc
     # snap install bitcoin
 # 3/ Direct download:
 # Check for the latest release on github, otherwise use the latest known version
-bitcoinCoreVersion=$(latest_release bitcoin/bitcoin 0.20.0) 
+bitcoinCoreVersion=$(latest_release bitcoin/bitcoin 0.20.1) 
 # Download bitcoin core from the serveur or the local dataShare folder
 if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" ]] ; then
     # During development, import from a folder "dataShare" if available
@@ -117,7 +117,7 @@ sudo apt-get update
 sudo apt-get install -y ethereum
 # If it failed, install binaries directly
 if [ ! -x "$(command -v geth)" ] ; then
-    gethVersion=geth-alltools-linux-amd64-1.9.14-6d74d1e5
+    gethVersion=geth-alltools-linux-amd64-1.9.21-0287d548
     wget -q https://gethstore.blob.core.windows.net/builds/$gethVersion.tar.gz
     tar xzf $gethVersion.tar.gz
     sudo install -m 0755 -o root -g root -t /usr/local/bin $gethVersion/*
@@ -126,7 +126,7 @@ if [ ! -x "$(command -v geth)" ] ; then
 fi
 
 ## Install IPFS
-IPFSVersion=$(latest_release ipfs/go-ipfs 0.5.1) 
+IPFSVersion=$(latest_release ipfs/go-ipfs 0.6.0) 
 wget -q https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -135,8 +135,8 @@ sudo ./install.sh
 cd
 rm -rf go-ipfs
 
-## Install Go environment (Used for Tendermint, Cosmos, Hyperledger Fabrci and Libra)
-goVersion=1.14.4
+## Install Go environment (Used for Tendermint, Cosmos, Hyperledger Fabric and Libra)
+goVersion=1.15.2
 if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
@@ -177,7 +177,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker $USER
 
 ## A modern command line text editor 
-microVersion=$(latest_release zyedidia/micro 2.0.4) 
+microVersion=$(latest_release zyedidia/micro 2.0.7) 
 wget -q "https://github.com/zyedidia/micro/releases/download/v$microVersion/micro-$microVersion-linux64-static.tar.gz"
 tar xzf "micro-$microVersion-linux64-static.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
@@ -185,7 +185,7 @@ rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
 ## Web terminal
-ttydVersion=$(latest_release tsl0922/ttyd 1.6.0) 
+ttydVersion=$(latest_release tsl0922/ttyd 1.6.1) 
 wget -q https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
 chmod +x ttyd
 sudo mv ttyd /usr/local/bin
