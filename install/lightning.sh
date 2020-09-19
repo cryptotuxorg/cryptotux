@@ -3,9 +3,6 @@
 ### Lightning ###
 # Assumes Bitcoin node and regtest configuration from main script
 
-B="\033[1m"
-N="\033[0m"
-
 ## Base configuration based on bitcoin.conf provided with Cryptotux
 echo '
 zmqpubrawblock=tcp://127.0.0.1:28332
@@ -16,8 +13,8 @@ addresstype=p2sh-segwit
 ## Install eclair
 # TODO:global function of latest release and include tag
 sudo apt-get install unzip
-eclairVersion="0.4"
-eclairTag="69c538e"
+eclairVersion="0.4.1"
+eclairTag="e5fb281"
 wget -q https://github.com/ACINQ/eclair/releases/download/v$eclairVersion/eclair-node-$eclairVersion-$eclairTag-bin.zip
 unzip eclair-node-$eclairVersion-$eclairTag-bin.zip
 sudo install -m 0755 -o root -g root -t /usr/local/bin/ eclair-node-$eclairVersion-$eclairTag/bin/*
@@ -42,7 +39,7 @@ eclair.api.password="bricodeur"
 echo 'alias eclair-node="eclair-node.sh";
 ' >> ~/.bashrc
 source .bashrc
-echo -e "> Eclair Lightning node installed and available at $B eclair-node$N and $B eclair-cli$N"
+echo -e "\n$B Eclair Lightning node$N installed and available at$C eclair-node$N and$C eclair-cli$N"
 rm eclair-node-$eclairVersion-$eclairTag-bin.zip
 rm -rf eclair-node-$eclairVersion-$eclairTag
 
@@ -68,9 +65,9 @@ bitcoind.rpcpass=bricodeur
 bitcoind.zmqpubrawblock=tcp://127.0.0.1:28332
 bitcoind.zmqpubrawtx=tcp://127.0.0.1:28333
 ''' > ~/.lnd/lnd.conf
-echo -e "> lnd Lightning node installed"
-echo -e "   Launch in different terminals$B bitcoind$N ,$B lnd$N, and$B lndcli (create|getinfo|connect...)$N"
-echo -e "   Options are preconfigured in ~/.lnd equivalent to lnd --bitcoin.active --bitcoin.testnet --debuglevel=debug --bitcoin.node=bitcoind --bitcoind.rpcuser=bobby --bitcoind.rpcpass=bricodeur --bitcoind.zmqpubrawblock=tcp://127.0.0.1:28332 --bitcoind.zmqpubrawtx=tcp://127.0.0.1:28333"
+echo -e "$B\nlnd Lightning node installed$N"
+echo -e "Launch in different terminals$C bitcoind$N ,$C lnd$N, and$C lndcli (create|getinfo|connect...)$N"
+echo -e "Options are preconfigured in ~/.lnd equivalent to lnd --bitcoin.active --bitcoin.testnet --debuglevel=debug --bitcoin.node=bitcoind --bitcoind.rpcuser=bobby --bitcoind.rpcpass=bricodeur --bitcoind.zmqpubrawblock=tcp://127.0.0.1:28332 --bitcoind.zmqpubrawtx=tcp://127.0.0.1:28333"
 
 
 ## Create two nodes for testing, Lena and Naori
@@ -105,7 +102,7 @@ alias lnd-Naori="lnd --lnddir=$NaoriDir";
 alias lncli-Naori="lncli -n regtest --lnddir=$NaoriDir --rpcserver=localhost:10012";
 ' >> ~/.bashrc
 source ~/.bashrc
-echo -e "> Tutorial installed"
-echo -e "   Two nodes$B Lena$N and$B Naori$N (lnd-Lena, lncli-Lena, lnd-Naori and lncli-Naori)have been preconfigured"
+echo -e "$B\nTutorial installed$N"
+echo -e "   Two nodes$B Lena$N and$B Naori$N (lnd-Lena, lncli-Lena, lnd-Naori and lncli-Naori) have been preconfigured"
 echo -e "   check .lnd/ folder and this tutorial https://github.com/lightningnetwork/lnd/tree/master/docker"
 # TODO add better configuration and walktrough

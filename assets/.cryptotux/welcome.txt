@@ -1,4 +1,4 @@
-\033[1mAvailable programs \033[0m 
+\033[1m\nAvailable programs \033[0m 
  
     Blockchain nodes:       bitcoind \033[90m(regtest)\033[0m, bitcoin-cli, geth
     Programming languages:  go, node, rust, gcc, python3
@@ -17,3 +17,5 @@
     cx desktop    install a light desktop environment
     cx list       list available additional networks (tezos, libra...)
     cx \033[90mXXX\033[0m        install a specific network tooling and nodes
+
+                        🐢                  

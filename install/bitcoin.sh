@@ -3,17 +3,14 @@
 ### Bitcoin ###
 # Assumes node with regtest configuration from main script
 
-B="\033[1m"
-N="\033[0m"
-
 ## Install Bitcoin source code
 mkdir -p ~/Projects/
-git clone https://github.com/bitcoin/bitcoin ~/Projects/Bitcoin
-echo -e "Bitcoin source code available at $B ~/Projects/Bitcoin$N"
+git clone https://github.com/bitcoin/bitcoin ~/Projects/bitcoin
+echo -e "Bitcoin source code available at $B ~/Projects/bitcoin$N"
 
 ## Electrum wallet
 # TODO : automated release version
-electrumVersion=3.3.8
+electrumVersion=4.0.3
 sudo apt-get install -y --no-install-recommends python3-pyqt5 python3-setuptools python3-pip
 wget -q https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz
 # Signature verification
@@ -25,7 +22,7 @@ python3 -m pip install --user Electrum-$electrumVersion.tar.gz
 echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
 source ~/.bashrc
 rm Electrum-$electrumVersion*
-echo -e ">  Electrum added, available via $B electrum$N and graphically"
+echo -e "\nElectrum added, available via$C electrum$N and graphically"
 
 ## Bitcoin local network tutorial
 cd  ~/.bitcoin/
@@ -71,7 +68,7 @@ alias bitcoin-cli-Bob="bitcoin-cli -datadir=$BobDir";
 ' >> ~/.bashrc
 source ~/.bashrc
 
-echo -e "> Nodes$B Alice$N and$B Bob$N have been preconfigured, using respectively ports 8331 and 8332"
-echo -e "  You can launch node Alice using $B bitcoind-Alice$N and connect with $B bitcoin-cli-Alice$N (connecting via 8321)"
+echo -e "\nNodes$B Alice$N and$B Bob$N have been preconfigured, using respectively ports 8331 and 8332"
+echo -e "  You can launch node Alice using$C bitcoind-Alice$N and connect with$C bitcoin-cli-Alice$N (connecting via 8321)"
 echo -e "  similarly with Bob. Add \`-daemon\` to regain control of the console"
-echo -e "  Both should with the original node \"Tux\" launched with $B bitcoind$N "
+echo -e "  Both should connect with the node$B Tux$N launched with$C bitcoind$N "

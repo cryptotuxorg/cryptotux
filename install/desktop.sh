@@ -104,4 +104,4 @@ sudo apt-get autoremove -y
 
 ## Reboot
 echo -e '\033[1m ## END OF INSTALL DESKTOP SCRIPT ## \033[0m'
-echo "Reboot or launch with startx"
+echo " Reboot or launch with startx"

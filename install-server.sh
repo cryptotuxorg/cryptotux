@@ -156,9 +156,6 @@ echo "export GOPATH=\$HOME/go" >> ~/.bashrc
 echo "export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH" >> ~/.bashrc
 source ~/.bashrc
 
-## Java environment (used in Corda)
-sudo apt-get install -y --no-install-recommends default-jdk maven 
-
 ## Docker tooling (Used in Hyperledger Fabric and Quorum )
 dockerComposeVersion=$(latest_release docker/compose)
 sudo apt-get install -y \
@@ -281,7 +278,7 @@ cd Tutorials
 # Great tutorial on bitcoinjs by Bitcoin Studio
 git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git
 # A simple Ethereum DApp example
-git clone https://github.com/Xalava/elemental-dapp.git Ethereum-elemental-dapp
+# git clone https://github.com/Xalava/elemental-dapp.git Ethereum-elemental-dapp
 # Another Ethereum example. Tutorial at https://medium.com/@austin_48503/programming-decentralized-money-300bacec3a4f
 git clone https://github.com/austintgriffith/scaffold-eth
 
@@ -289,7 +286,7 @@ git clone https://github.com/austintgriffith/scaffold-eth
 cd
 # Retrieve configuration files from this repo
 mkdir -p ~/Projects/
-git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
+git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/cryptotux
 # Use Vagrant shared folder if available for the latest version or the github imported version
 [ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
 # Copy of the configuration local folder
@@ -323,8 +320,6 @@ npm install -g tldr
 echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
 /home/$USER/.npm-global/bin/tldr update
 
-
-
 # Pure fun and style 
 sudo apt-get install -y cowsay 
 echo '[ ! -e ~/.cryptotux/greeted ] && cryptotux turtle && touch ~/.cryptotux/greeted' >> ~/.profile
@@ -334,6 +329,11 @@ sed -i -e 's/#force_color_prompt/force_color_prompt/g' ~/.bashrc
 sed -i '/PS1/c\
 PS1="\\n${debian_chroot:+($debian_chroot)}\\[\\033[00;36m\\]\\u\\[\\033[00;90m\\]@\\[\\033[00;32m\\]\\h\\[\\033[00;90m\\]:\\[\\033[00;36m\\]\\w\\[\\033[00;90m\\]$\\[\\033[00m\\] "
 ' ~/.bashrc
+echo '
+export B="\033[1m"
+export N="\033[0m"
+export C="\033[36m"
+' >> ~/.bashrc
 
 # Display cryptotux help at every connection
 echo 'cryptotux help' >> ~/.profile

@@ -24,7 +24,7 @@ echo '
 
 ## Ethereum 2.0 
 # Install Lighthouse
-sudo apt install cmakelibssl-dev
+sudo apt install cmake libssl-dev
 mkdir -p ~/Projects
 cd ~/Projects
 git clone https://github.com/sigp/lighthouse.git
@@ -50,3 +50,5 @@ sudo ./deposit.sh install
 # Launch with 
 # ./deposit.sh --num_validators 5 --chain medalla
 cd
+
+echo -e '\033[1mEthereum dev installed\033[0m'
