@@ -7,7 +7,7 @@ echo "##  INSTALL CRYPTOTUX 🐢 SERVER SCRIPT  ##"
 # Contributions are welcome
 
 export DEBIAN_FRONTEND=noninteractive
-export CRYPTOTUX_VERSION=0.7
+export CRYPTOTUX_VERSION=0.8
 
 ## Common functions
 latest_release () {
@@ -183,10 +183,10 @@ rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
 ## Modern and easy encryption tool 
-ageVersion=$(latest_release FiloSottile/age 1.0.0-beta4) 
+ageVersion=$(latest_release FiloSottile/age 1.0.0-beta2) 
 wget -q "https://github.com/FiloSottile/age/releases/download/v$ageVersion/age-v$ageVersion-linux-amd64.tar.gz"
 tar xzf "age-v$ageVersion-linux-amd64.tar.gz"
-sudo install -m 0755 -o root -g root -t /usr/local/bin age-v$ageVersion/age
+sudo install -m 0755 -o root -g root -t /usr/local/bin age/*
 rm -rf age-v$ageVersion/
 rm "age-v$ageVersion-linux-amd64.tar.gz"
 

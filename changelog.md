@@ -1,8 +1,16 @@
 # Changelog
-## 0.7.0 > 17 june 2020
+## 0.8.0 > 21 Sept 2020
+- [server] start_eth_project to create a base project in Ethereum
+- [server] ethereum.sh script, to install lighthouse, Prysm and a more complete dev environment
+- [server] Prettier welcome and install messages
+- [server] corda.sh script 
+- [server] added age, a crypto utility 
+- [server] added nnn, a console file explorer
+
+## 0.7.0 > 17 June 2020
 #### Users
-- [common] added bitcoin and lightning two node tutorial configuration
-- [common] cosmos script
+- [server] added bitcoin and lightning two node tutorial configuration
+- [server] cosmos script
 #### Internal
 - cleaner `cryptotux`/`cx` command
 - install folder with scripts
@@ -24,7 +32,7 @@
 - [desktop] Default mimetypes for convenience 
 - [server] Welcome message with available commands
 #### Internal
-- install-server.sh  can now be safely executed on a server independently of Vagrant
+- install-server.sh can now be safely executed on a server independently of Vagrant
 - Better script portability 
 - Additional scripts to install lightning, tendermint, Libra and Tezos (carthagenet)
 ## 0.6.0 > 27 May 2020

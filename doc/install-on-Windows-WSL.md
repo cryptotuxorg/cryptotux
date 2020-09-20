@@ -1,3 +1,12 @@
+# Installation on Windows Subsytem for Linux
+The installation takes three step. See details below.
+1. Install and activate [WSL **2**](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+2. In the Microsoft Store, install Ubuntu 20.04 LTS
+3. Launch Ubuntu from the menu and type in
+```bash
+bash -x <(curl -sL https://cryptotux.org/install)
+```
+
 ## 1. Install Windows Subsystem for Linux 
 
 Open Powershell in **admin mode**
@@ -14,7 +23,6 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 ```
 Then make it default an reboot
 ```Powershell
-
 wsl --set-default-version 2
 ```
 
@@ -38,6 +46,8 @@ Finally, install
 ```bash
 bash -x <(curl -sL https://cryptotux.org/install)
 ```
+You might also need to press enter occasionally.
+
 ## Troubleshooting
 
 ### Temporary fix for WSL1 and Ubuntu 20.04

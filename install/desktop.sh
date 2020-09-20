@@ -16,7 +16,8 @@ sudo apt-get update
 sudo apt-get install -y --no-install-recommends \
     xserver-xorg \
     lxde lightdm lightdm-gtk-greeter\
-    gtk2-engines gnome-themes-extra dmz-cursor-theme
+    gtk2-engines gnome-themes-extra dmz-cursor-theme\
+    fonts-noto-color-emoji
 
 # In a virtual environment, stop services likely to be less useful for desktop workshops
 if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
@@ -33,7 +34,7 @@ cd
 # Retrieve configuration files from this repo if not available yet
 if [[ ! -d ~/Projects/Cryptotux ]]; then
   mkdir -p ~/Projects
-  git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/Cryptotux
+  git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/cryptotux
 else 
   cd ~/Projects/Cryptotux
   git pull
