@@ -3,7 +3,7 @@
 Cryptotux est une image Linux préconfigurée pour le developpement et l'apprentissage des crypto et blockchains.
 
 ## Installation
-1. Installer Virtualbox, version 6 ou plus. https://www.virtualbox.org/
+1. Installer VirtualBox, version 6 ou plus. https://www.virtualbox.org/
 2. Télécharger la dernière version de Cryptotux (version **desktop**) dans l'onglet "Release" de Github.
 3. Charger l'image depuis virtualbox (importer une image)
 4. Lancer l'image (fleche verte)

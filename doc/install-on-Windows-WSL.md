@@ -1,4 +1,4 @@
-# Installation on Windows Subsytem for Linux
+# Installation on Windows Subsystem for Linux
 The installation takes three step. See details below.
 1. Install and activate [WSL **2**](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 2. In the Microsoft Store, install Ubuntu 20.04 LTS
