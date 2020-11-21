@@ -22,6 +22,14 @@ echo '
 }
 ' > ~/.bashrc
 
+## Hyperledger Besu 
+besuVersion=$(latest_release hyperledger/besu 20.10.1) 
+mkdir -p ~/Projects
+cd ~/Projects
+wget -q https://dl.bintray.com/hyperledger-org/besu-repo/besu-$besuVersion.zip
+unzip -q besu-$besuVersion.zip
+rm besu-$besuVersion.zip
+
 ## Ethereum 2.0 
 # Install Lighthouse
 sudo apt install cmake libssl-dev

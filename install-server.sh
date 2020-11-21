@@ -10,7 +10,7 @@ export DEBIAN_FRONTEND=noninteractive
 export CRYPTOTUX_VERSION=0.8
 
 ## Common functions
-latest_release () {
+echo 'latest_release () {
     # Retrieve latest release name from github
     release=$(curl --silent "https://api.github.com/repos/$1/releases/latest" | jq -r .tag_name )
     # If first char is "v", remove it
@@ -18,7 +18,8 @@ latest_release () {
     # If empty or null, use provided default
     [[ -z $release || $release = "null" && -n $2 ]] && release=$2
     echo $release
-}
+}' >> ~/.bashrc
+source ~/.bashrc
 
 ## Install common development tools
 sudo apt-get update && sudo apt-get upgrade -y
