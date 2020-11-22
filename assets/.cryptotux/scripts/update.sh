@@ -16,7 +16,7 @@ cd ~/Projects/
 for i in */.git; do ( echo "> $i ";cd $i/..; git pull;); done;
 
 echo ">> Update cryptotux scripts"
-cryptopath="/home/$USER/Projects/Cryptotux"
+cryptopath="/home/$USER/Projects/cryptotux"
 cd
 cp -R "${cryptopath}/assets/.cryptotux" .
 cp -R "${cryptopath}/install/" .cryptotux/

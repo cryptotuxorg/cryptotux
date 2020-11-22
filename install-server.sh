@@ -1,6 +1,11 @@
-#!/bin/bash -x
+#!/bin/bash
+if "$DEBUG"; then
+    # Debug is set in the launching install-base script by default.
+    # This will display every line. Otherwise only explicit outputs are visible
+    set -x
+ fi
 
-echo "##  INSTALL CRYPTOTUX 🐢 SERVER SCRIPT  ##"
+echo "## CRYPTOTUX 🐢 INSTALL-SERVER SCRIPT  ##"
 # This script installs common development tools and major blockchain networks nodes
 # The script can be run on a fresh ubuntu server install as a user, and will potentially work on any debian installation
 # Each section, denoted with  ##, is relatively independant from the context
@@ -19,9 +24,10 @@ echo 'latest_release () {
     [[ -z $release || $release = "null" && -n $2 ]] && release=$2
     echo $release
 }' >> ~/.bashrc
-source ~/.bashrc
+source ~/.bashrc89
 
 ## Install common development tools
+echo "Installing common development tools 🛠️"
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y \
     curl git python3 vim python3-pip \
@@ -41,6 +47,7 @@ fi
 
 
 ## Install Rust programming language tooling (Used for Libra)
+echo "Installing Rust ⚙"
 cd
 if [ ! -x "$(command -v rustc)" ] ; then
     curl https://sh.rustup.rs -sSf > rustup.sh
@@ -51,8 +58,9 @@ else
     rustup update
 fi
 ## Node.js,npm and yarn and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
+echo "Installing Nodejs ⬢"
 cd 
-nodeVersion=14.x # We force future LTS version
+nodeVersion=14.x # We use current LTS version
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
@@ -65,6 +73,7 @@ rm nodesource_setup.sh
 source ~/.bashrc
 
 ## Install bitcoin development related tools
+echo "Installing Bitcoin (Bitcoin core) ₿"
 # 1/ PPA option (deprecated):
     # sudo add-apt-repository ppa:bitcoin/bitcoin
     # sudo apt-get install -y bitcoind
@@ -87,8 +96,7 @@ tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
 # TODO: add verification
 sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
 wget -q "https://raw.githubusercontent.com/bitcoin/bitcoin/master/share/pixmaps/bitcoin128.png"
-sudo cp bitcoin128.png /usr/share/pixmaps/
-rm bitcoin128.png
+sudo mv bitcoin128.png /usr/share/pixmaps/
 rm -rf bitcoin-$bitcoinCoreVersion/
 rm "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
 mkdir -p ~/.bitcoin
@@ -113,13 +121,16 @@ rpcallowip=127.0.0.1
 ' > ~/.bitcoin/bitcoin.conf
 
 ## Install Ethereum development nodes
+echo "Installing Ethereum (geth) ♦️"
+
 # bash <(curl https://get.parity.io -L) # Divested and switched to OpenEthereum
 sudo add-apt-repository -y ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install -y ethereum
 # If it failed, install binaries directly
 if [ ! -x "$(command -v geth)" ] ; then
-    gethVersion=geth-alltools-linux-amd64-1.9.21-0287d548
+    # TODO maybe automate the next line 
+    gethVersion=geth-alltools-linux-amd64-1.9.24-cc05b050
     wget -q https://gethstore.blob.core.windows.net/builds/$gethVersion.tar.gz
     tar xzf $gethVersion.tar.gz
     sudo install -m 0755 -o root -g root -t /usr/local/bin $gethVersion/*
@@ -128,7 +139,9 @@ if [ ! -x "$(command -v geth)" ] ; then
 fi
 
 ## Install IPFS
-IPFSVersion=$(latest_release ipfs/go-ipfs 0.6.0) 
+echo "Installing IPFS 🪐"
+
+IPFSVersion=$(latest_release ipfs/go-ipfs 0.7.0) 
 wget -q https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -138,7 +151,8 @@ cd
 rm -rf go-ipfs
 
 ## Install Go environment (Used for Tendermint, Cosmos, Hyperledger Fabric and Libra)
-goVersion=1.15.2
+echo "Installing Go 🐹"
+goVersion=1.15.5
 if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
@@ -158,6 +172,7 @@ echo "export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH" >> ~/.bashrc
 source ~/.bashrc
 
 ## Docker tooling (Used in Hyperledger Fabric and Quorum )
+echo "Installing Docker 🐋"
 dockerComposeVersion=$(latest_release docker/compose)
 sudo apt-get install -y \
     apt-transport-https\
@@ -175,23 +190,25 @@ sudo curl -L "https://github.com/docker/compose/releases/download/$dockerCompose
 sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -a -G docker $USER
 
-## A modern command line text editor 
-microVersion=$(latest_release zyedidia/micro 2.0.7) 
+## Command line utilities 
+echo "Installing command line utilities ⌨"
+# A modern command line text editor 
+microVersion=$(latest_release zyedidia/micro 2.0.8) 
 wget -q "https://github.com/zyedidia/micro/releases/download/v$microVersion/micro-$microVersion-linux64-static.tar.gz"
 tar xzf "micro-$microVersion-linux64-static.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
 rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
-## Modern and easy encryption tool 
-ageVersion=$(latest_release FiloSottile/age 1.0.0-beta2) 
+# Modern and easy encryption tool 
+ageVersion=$(latest_release FiloSottile/age 1.0.0-beta5) 
 wget -q "https://github.com/FiloSottile/age/releases/download/v$ageVersion/age-v$ageVersion-linux-amd64.tar.gz"
 tar xzf "age-v$ageVersion-linux-amd64.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin age/*
 rm -rf age-v$ageVersion/
 rm "age-v$ageVersion-linux-amd64.tar.gz"
 
-## Modern terminal file manager (cool addition, but complex installation that might break in future releases)
+# Modern terminal file manager (cool addition, but complex installation that might break in future releases)
 cd
 git clone https://github.com/sebastiencs/icons-in-terminal.git
 cd icons-in-terminal
@@ -201,7 +218,7 @@ cd
 rm -rf icons-in-terminal
 # Old 3.0 version is available at sudo apt install nnn
 cd 
-nnnVersion=$(latest_release jarun/nnn 3.4) 
+nnnVersion=$(latest_release jarun/nnn 3.5) 
 wget -q "https://github.com/jarun/nnn/releases/download/v$nnnVersion/nnn-v$nnnVersion.tar.gz"
 tar xzf "nnn-v$nnnVersion.tar.gz"
 cd nnn-$nnnVersion
@@ -212,6 +229,7 @@ rm -rf nnn-$nnnVersion/
 rm "nnn-v$nnnVersion.tar.gz"
 
 ## Web terminal
+echo "Installing web terminal for browser based access 📺"
 ttydVersion=$(latest_release tsl0922/ttyd 1.6.1) 
 wget -q https://github.com/tsl0922/ttyd/releases/download/$ttydVersion/ttyd_linux.x86_64 -O ttyd
 chmod +x ttyd
@@ -232,6 +250,7 @@ sudo systemctl enable ttyd
 sudo service ttyd start
 
 ## Login indication and boot cosmetic for virtual environments
+echo "Installing login configuration ✅"
 if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
     # Console login greeter
     echo "Cryptotux $CRYPTOTUX_VERSION - \\l
@@ -271,6 +290,7 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
 fi
 
 ## Tutorials
+echo "Adding tutorials 🧑‍🏫"
 # Suggestions welcomed
 cd 
 mkdir Tutorials
@@ -368,4 +388,4 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
     sudo usermod -aG vboxsf $USER
 fi
 
-echo "## END OF INSTALL SERVER SCRIPT  ##"
+echo "## END OF CRYPTOTUX 🐢 INSTALL-SERVER SCRIPT  ##"

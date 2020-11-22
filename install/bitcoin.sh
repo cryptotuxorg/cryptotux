@@ -10,7 +10,7 @@ echo -e "Bitcoin source code available at $B ~/Projects/bitcoin$N"
 
 ## Electrum wallet
 # TODO : automated release version
-electrumVersion=4.0.3
+electrumVersion=4.0.5
 sudo apt-get install -y --no-install-recommends python3-pyqt5 python3-setuptools python3-pip
 wget -q https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz
 # Signature verification

@@ -19,3 +19,6 @@ Host cryptotux
 If you have many ssh keys, add `-o IdentitiesOnly=yes` to `ssh` and `sshfs` commands.
 
 If you use an X server on your host OS you can access to the desktop via `ssh -X ...` too.
+
+## Interact from visual code
+You can use also specific Visual Code Studio extenstions [remote - ssh](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) or [remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)

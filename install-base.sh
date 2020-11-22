@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash 
+set -x
 
 export DEBIAN_FRONTEND=noninteractive #Prevents script from accessing stdin
 
@@ -24,4 +25,4 @@ service ssh reload
 echo '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Launching the main installation script as user bobby
-su -c "bash -x /vagrant/install-server.sh" bobby
+DEBUG=true su -c "bash -x /vagrant/install-server.sh" bobby
