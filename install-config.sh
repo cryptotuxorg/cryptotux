@@ -1,10 +1,10 @@
 #!/bin/bash 
-set -x
-
-export DEBIAN_FRONTEND=noninteractive #Prevents script from accessing stdin
-
-echo "##  BASE SCRIPT  ##"
 # This script, specific to vagrant, creates a user with full access and accessible admin rights
+
+# Launch options
+set -x # display every command
+export DEBIAN_FRONTEND=noninteractive #Prevents script from accessing stdin
+echo "##  CONFIG SCRIPT  ##"
 
 ## Creation of user bobby, password bricodeur
 adduser --quiet --disabled-password --shell /bin/bash --home /home/bobby --gecos "" bobby

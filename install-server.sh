@@ -3,7 +3,9 @@ if "$DEBUG"; then
     # Debug is set in the launching install-base script by default.
     # This will display every line. Otherwise only explicit outputs are visible
     set -x
- fi
+else
+    exec > /dev/null
+fi
 
 echo "## CRYPTOTUX 🐢 INSTALL-SERVER SCRIPT  ##"
 # This script installs common development tools and major blockchain networks nodes
@@ -11,28 +13,37 @@ echo "## CRYPTOTUX 🐢 INSTALL-SERVER SCRIPT  ##"
 # Each section, denoted with  ##, is relatively independant from the context
 # Contributions are welcome
 
-export DEBIAN_FRONTEND=noninteractive
 export CRYPTOTUX_VERSION=0.8
 
-## Common functions
-echo 'latest_release () {
-    # Retrieve latest release name from github
-    release=$(curl --silent "https://api.github.com/repos/$1/releases/latest" | jq -r .tag_name )
-    # If first char is "v", remove it
-    [[ $(echo $release | cut -c 1) = "v" ]] && release=$(echo $release | cut -c 2-)
-    # If empty or null, use provided default
-    [[ -z $release || $release = "null" && -n $2 ]] && release=$2
-    echo $release
-}' >> ~/.bashrc
-source ~/.bashrc89
+# Prevent unnecessary error messages
+export DEBIAN_FRONTEND=noninteractive
+export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=true
 
 ## Install common development tools
-echo "Installing common development tools 🛠️"
+cd
+echo -e "\n# Cryptotux specific" >> ~/.bashrc
+echo "export PATH=$HOME/.local/bin:\$PATH" >> ~/.bashrc
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y \
     curl git python3 vim python3-pip \
+    unzip \
     jq  > /dev/null 2>&1 # Useful json parser
 echo "export PATH=$HOME/.local/bin:\$PATH" >> ~/.bashrc
+
+## Install cryptotux scripts
+cd
+# Retrieve configuration files from this repo
+mkdir -p ~/Projects/
+git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/cryptotux
+# Use Vagrant shared folder if available for the latest version or the github imported version
+[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
+# Copy of the configuration local folder
+cp -R "${cryptopath}/assets/.cryptotux" .
+# Install scripts are added to this local folder. They are separated for development readability
+cp -R "${cryptopath}/install/" .cryptotux/
+# We read helpers to include useful function such as latest_release and cx and include it in bashrc
+source ~/.cryptotux/scripts/helpers.sh
+echo 'source ~/.cryptotux/scripts/helpers.sh' >> ~/.bashrc
 
 ## WSL specific (alternatively uname -a)
 if grep -q Microsoft /proc/version; then
@@ -45,7 +56,6 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -i virtualbox ) ]] ; then
     sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils 
 fi
 
-
 ## Install Rust programming language tooling (Used for Libra)
 echo "Installing Rust ⚙"
 cd
@@ -57,6 +67,7 @@ if [ ! -x "$(command -v rustc)" ] ; then
 else
     rustup update
 fi
+
 ## Node.js,npm and yarn and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
 echo "Installing Nodejs ⬢"
 cd 
@@ -74,69 +85,11 @@ source ~/.bashrc
 
 ## Install bitcoin development related tools
 echo "Installing Bitcoin (Bitcoin core) ₿"
-# 1/ PPA option (deprecated):
-    # sudo add-apt-repository ppa:bitcoin/bitcoin
-    # sudo apt-get install -y bitcoind
-# 2/ snap option. But snap 🤷:
-    # snap install bitcoin
-# 3/ Direct download:
-# Check for the latest release on github, otherwise use the latest known version
-bitcoinCoreVersion=$(latest_release bitcoin/bitcoin 0.20.1) 
-# Download bitcoin core from the serveur or the local dataShare folder
-if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" ]] ; then
-    # During development, import from a folder "dataShare" if available
-	cp "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" .
-else
-    # Import from bitcoincore servers. It might be slow
-	wget -q "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
-    # If shared folder is available, save for later
-    [[ -e "/vagrant/dataShare/" ]] && sudo cp bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz /vagrant/dataShare/
-fi
-tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
-# TODO: add verification
-sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
-wget -q "https://raw.githubusercontent.com/bitcoin/bitcoin/master/share/pixmaps/bitcoin128.png"
-sudo mv bitcoin128.png /usr/share/pixmaps/
-rm -rf bitcoin-$bitcoinCoreVersion/
-rm "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
-mkdir -p ~/.bitcoin
-echo '
-# Add to user agent
-uacomment=TuTux
-txindex=1
-
-# Local network for testing
-regtest=1
-
-# Accept JSON-RPC commands
-server=1
-rest=1
-
-# Define access
-rpcuser=bobby
-rpcpassword=bricodeur
-rpcallowip=127.0.0.1
-
-# NB: default ports on regtest are 18443 RPC and 18444 P2P
-' > ~/.bitcoin/bitcoin.conf
+source ~/.cryptotux/install/bitcoin.sh base
 
 ## Install Ethereum development nodes
 echo "Installing Ethereum (geth) ♦️"
-
-# bash <(curl https://get.parity.io -L) # Divested and switched to OpenEthereum
-sudo add-apt-repository -y ppa:ethereum/ethereum
-sudo apt-get update
-sudo apt-get install -y ethereum
-# If it failed, install binaries directly
-if [ ! -x "$(command -v geth)" ] ; then
-    # TODO maybe automate the next line 
-    gethVersion=geth-alltools-linux-amd64-1.9.24-cc05b050
-    wget -q https://gethstore.blob.core.windows.net/builds/$gethVersion.tar.gz
-    tar xzf $gethVersion.tar.gz
-    sudo install -m 0755 -o root -g root -t /usr/local/bin $gethVersion/*
-    rm -rf $gethVersion
-    rm "$gethVersion.tar.gz"
-fi
+source ~/.cryptotux/install/ethereum.sh base
 
 ## Install IPFS
 echo "Installing IPFS 🪐"
@@ -304,37 +257,11 @@ git clone https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.g
 git clone https://github.com/austintgriffith/scaffold-eth
 
 ## Configuration Preferences 
-cd
-# Retrieve configuration files from this repo
-mkdir -p ~/Projects/
-git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/cryptotux
-# Use Vagrant shared folder if available for the latest version or the github imported version
-[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
-# Copy of the configuration local folder
-cp -R "${cryptopath}/assets/.cryptotux" .
-# Install scripts are added to this local folder. They are separated for development readability
-cp -R "${cryptopath}/install/" .cryptotux/
+
+echo "export CRYPTOTUX_VERSION=$CRYPTOTUX_VERSION" >> ~/.bashrc
 
 # Reduces shutdown speed in case of service failure (Quick and dirty approach)
 sudo sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=10s/g' /etc/systemd/system.conf
-
-# Cryptotux commands
-echo '
-function cryptotux {
-    if [ -e ~/.cryptotux/scripts/$1.sh ] ; then
-        bash ~/.cryptotux/scripts/$1.sh 
-    else 
-        if [ -e ~/.cryptotux/install/$1.sh ] ; then
-            bash ~/.cryptotux/install/$1.sh
-        else
-            bash ~/.cryptotux/install/help.sh
-        fi
-    fi
-}
-alias cx="cryptotux"
-complete -W "$( { ls ~/.cryptotux/scripts/; ls ~/.cryptotux/install/; }| rev | cut -c 4- | rev )" cx cryptotux
-' >> ~/.bashrc
-echo "export CRYPTOTUX_VERSION=$CRYPTOTUX_VERSION" >>  ~/.bashrc
 
 # Nice command line help for beginners
 npm install -g tldr 
@@ -384,8 +311,13 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
         packagekit \
         apparmor 
     sudo apt-get autoremove -y
-    #Add current user to vbox group, a reboot might be necessary
+    # Add current user to vbox group, a reboot might be necessary
     sudo usermod -aG vboxsf $USER
 fi
 
 echo "## END OF CRYPTOTUX 🐢 INSTALL-SERVER SCRIPT  ##"
+
+if "$DEBUG"; then
+    # In debug mode, display installed versions
+    bash ~/.cryptotux/scripts/versions.sh
+fi

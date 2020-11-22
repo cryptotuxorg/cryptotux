@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
   # Install basic configuration
   # Creates bobby user and launch install-server.sh as bobby
   config.vm.provision "shell",
-    inline: "/bin/bash -eux /vagrant/install-base.sh"
+    inline: "/bin/bash -eux /vagrant/install-config.sh"
   # config.vm.provision :shell, :path => "install-base.sh" 
   
   config.vm.network "private_network", ip: "192.168.33.10"

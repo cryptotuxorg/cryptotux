@@ -1,7 +1,61 @@
-#!/bin/bash -x
+#!/bin/bash
 
 ### Bitcoin ###
-# Assumes node with regtest configuration from main script
+
+if [ "$1" = "base" ] || [ "$1" = "full" ]; then
+    ## Base installation, called from the main script
+
+    # 1/ PPA option (deprecated):
+        # sudo add-apt-repository ppa:bitcoin/bitcoin
+        # sudo apt-get install -y bitcoind
+    # 2/ snap option. But snap 🤷:
+        # snap install bitcoin
+    # 3/ Direct download:
+    # Check for the latest release on github, otherwise use the latest known version
+    bitcoinCoreVersion=$(latest_release bitcoin/bitcoin 0.20.1) 
+    # Download bitcoin core from the serveur or the local dataShare folder
+    if [[ -e "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" ]] ; then
+        # During development, import from a folder "dataShare" if available
+        cp "/vagrant/dataShare/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz" .
+    else
+        # Import from bitcoincore servers. It might be slow
+        wget -q "https://bitcoincore.org/bin/bitcoin-core-$bitcoinCoreVersion/bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+        # If shared folder is available, save for later
+        [[ -e "/vagrant/dataShare/" ]] && sudo cp bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz /vagrant/dataShare/
+    fi
+    tar xzf "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+    # TODO: add verification
+    sudo install -m 0755 -o root -g root -t /usr/local/bin bitcoin-$bitcoinCoreVersion/bin/*
+    wget -q "https://raw.githubusercontent.com/bitcoin/bitcoin/master/share/pixmaps/bitcoin128.png"
+    sudo mv bitcoin128.png /usr/share/pixmaps/
+    rm -rf bitcoin-$bitcoinCoreVersion/
+    rm "bitcoin-$bitcoinCoreVersion-x86_64-linux-gnu.tar.gz"
+    mkdir -p ~/.bitcoin
+    echo '
+    # Add to user agent
+    uacomment=TuTux
+    txindex=1
+
+    # Local network for testing
+    regtest=1
+
+    # Accept JSON-RPC commands
+    server=1
+    rest=1
+
+    # Define access
+    rpcuser=bobby
+    rpcpassword=bricodeur
+    rpcallowip=127.0.0.1
+
+    # NB: default ports on regtest are 18443 RPC and 18444 P2P
+    ' > ~/.bitcoin/bitcoin.conf
+    
+    if [ "$1" = "base" ]; then
+        # Return to main script if only base was invoked
+        return 1 
+    fi
+fi
 
 ## Install Bitcoin source code
 mkdir -p ~/Projects/

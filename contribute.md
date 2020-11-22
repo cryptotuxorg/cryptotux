@@ -25,3 +25,7 @@ And voilà !
 To build and run the desktop version `vagrant up desktop` or run the command `cryptotux desktop` within the default virtual machine. This desktop build is meant for educational purposes.
 
 For the ansible version, move to the desired flavour and type `vagrant up`. See [readme](flavours/README.md)
+
+## Styling
+
+Bash scripts follow approxamitavely some conventions suggested in this [guide](https://google.github.io/styleguide/shellguide.html)
