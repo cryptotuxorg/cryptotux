@@ -1,6 +1,6 @@
 #!/bin/bash 
 # Function that are useful for other cryptotux scripts. 
-# This script is meant to be sourced by the main install script and 
+# This script is meant to be sourced by the main install script and .bashrc
 
 latest_release () {
     # Retrieve latest release name from github

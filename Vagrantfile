@@ -52,8 +52,12 @@ Vagrant.configure("2") do |config|
     vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional', '--bioslogodisplaytime', 0] 
     # Driver that might be more suited for resizing, but it seems less reliable
     # vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+  
     # Bugfix https://bugs.launchpad.net/cloud-images/+bug/1829625
-    vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+    # vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+    # V2 of bugfix. Does it avoid a /dev/null error on windows?
+    vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+
   end
   
   # Install basic configuration

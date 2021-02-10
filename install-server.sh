@@ -36,7 +36,7 @@ cd
 mkdir -p ~/Projects/
 git clone https://github.com/cryptotuxorg/cryptotux ~/Projects/cryptotux
 # Use Vagrant shared folder if available for the latest version or the github imported version
-[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="/home/$USER/Projects/Cryptotux"
+[ -d "/vagrant/assets" ] && cryptopath="/vagrant" ||  cryptopath="~/Projects/Cryptotux"
 # Copy of the configuration local folder
 cp -R "${cryptopath}/assets/.cryptotux" .
 # Install scripts are added to this local folder. They are separated for development readability
@@ -266,7 +266,7 @@ sudo sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=10s/g' /etc/syst
 # Nice command line help for beginners
 npm install -g tldr 
 echo 'alias tldr="tldr -t ocean"' >> ~/.bashrc
-/home/$USER/.npm-global/bin/tldr update
+~/.npm-global/bin/tldr update
 
 # Pure fun and style 
 sudo apt-get install -y cowsay 
@@ -296,7 +296,7 @@ sudo chmod +x /etc/update-motd.d/50-landscape-sysinfo
 # Prior approach : if [ -d "/vagrant/assets" ] 
 if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ; then
     sudo apt-get purge -y \
-        snapd \
+        # snapd \
         apport \
         ubuntu-release-upgrader-core \
         update-manager-core \

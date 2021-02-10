@@ -50,6 +50,19 @@ if [ "$1" = "base" ] || [ "$1" = "full" ]; then
 
     # NB: default ports on regtest are 18443 RPC and 18444 P2P
     ' > ~/.bitcoin/bitcoin.conf
+
+    # Copay (I haven't found an alternative install)
+    sudo snap install bitpay
+
+    # Vanitygen 
+    sudo snap install vanitygen
+
+    # Vanitygen plus (seems better, but requires work to get it right)
+    # mkdir -p ~/Projects
+    # cd ~/Projects
+    # wget https://github.com/exploitagency/vanitygen-plus/releases/download/PLUS1.53/linux-binary.tar.gz
+    # rm linux-binary.tar.gz
+    # mv linux-binary vanitygen
     
     if [ "$1" = "base" ]; then
         # Return to main script if only base was invoked
@@ -64,7 +77,7 @@ echo -e "Bitcoin source code available at $B ~/Projects/bitcoin$N"
 
 ## Electrum wallet
 # TODO : automated release version
-electrumVersion=4.0.5
+electrumVersion=4.0.7
 sudo apt-get install -y --no-install-recommends python3-pyqt5 python3-setuptools python3-pip
 wget -q https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz
 # Signature verification
@@ -73,6 +86,9 @@ wget -q https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion
 gpg --status-fd 1 --verify Electrum-$electrumVersion.tar.gz.asc Electrum-$electrumVersion.tar.gz 2>/dev/null | grep -q 'GOODSIG' || echo -e "$B Error in Electrum signature$N"
 # Install
 python3 -m pip install --user Electrum-$electrumVersion.tar.gz
+# alternate 
+# wget https://download.electrum.org/$electrumVersion/electrum-$electrumVersion-x86_64.AppImage -O ~/.local/bin/electrum
+# chmod +x ~/.local/bin/electrum
 echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
 source ~/.bashrc
 rm Electrum-$electrumVersion*

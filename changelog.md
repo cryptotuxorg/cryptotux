@@ -1,11 +1,10 @@
 # Changelog
 ## Next
-### Ethereum
-- added hyperledger besu
-- removed openzeppelin cli
-### Internal
-- renaming base script
-- moved install logic to network scripts
+- [Bitcoin] added copay
+- [Ethereum] added hyperledger besu
+- [Ethereum] removed openzeppelin cli
+- [Internal] renaming base script
+- [Internal] moved install logic to network scripts
 
 ## 0.8.0 > 21 Sept 2020
 - [server] start_eth_project to create a base project in Ethereum
