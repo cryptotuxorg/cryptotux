@@ -309,7 +309,7 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
         cloud-init \
         multipath-tools \
         packagekit \
-        apparmor 
+    #    apparmor 
     sudo apt-get autoremove -y
     # Add current user to vbox group, a reboot might be necessary
     sudo usermod -aG vboxsf $USER

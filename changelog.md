@@ -1,5 +1,5 @@
 # Changelog
-## Next
+## 0.8.1 > 12 Feb 2021
 - [Bitcoin] added copay
 - [Ethereum] added hyperledger besu
 - [Ethereum] removed openzeppelin cli
