@@ -1,5 +1,8 @@
-# ssh configuration
+# SSH configuration
 Additional configuration to connect to the machines
+
+## Simple connection
+To connect via SSH, open a terminal and type `ssh bobby@192.168.33.10` (password is *bricodeur*).
 
 ## Syncing folders
 For ease you can sync a local folder and the internal user folder of the machine. VIrtualBox provides a solution but I recommend `sshfs`:

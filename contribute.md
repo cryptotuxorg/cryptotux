@@ -17,6 +17,7 @@ Provided ova images are built from the vagrantfile using bash scripts.
 ## To build images from scratch
 
 * Install [vagrant](https://www.vagrantup.com/downloads.html) and virtualbox. 
+* Clone the current repository
 * To build and run the server version `vagrant up`
 * To connect to the server : `vagrant ssh`
 
@@ -24,8 +25,8 @@ And voilà !
 
 To build and run the desktop version `vagrant up desktop` or run the command `cryptotux desktop` within the default virtual machine. This desktop build is meant for educational purposes.
 
-For the ansible version, move to the desired flavour and type `vagrant up`. See [readme](flavours/README.md)
+For the Ansible version, move to the desired flavour and type `vagrant up`. See [readme](flavours/README.md)
 
 ## Styling
 
-Bash scripts follow approxamitavely some conventions suggested in this [guide](https://google.github.io/styleguide/shellguide.html)
+Bash scripts follow approximatively some conventions suggested in this [guide](https://google.github.io/styleguide/shellguide.html)
