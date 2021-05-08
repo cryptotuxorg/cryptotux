@@ -208,7 +208,7 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
     # Console login greeter
     echo "Cryptotux $CRYPTOTUX_VERSION - \\l
 
-    User is \"bobby\", password is \"bricodeur\"
+    Default user is \"bobby\", password is \"bricodeur\"
     " | sudo tee /etc/issue | sudo tee /etc/issue.net
 
     # Silent launch
