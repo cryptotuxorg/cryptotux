@@ -2,7 +2,8 @@
 if "$DEBUG"; then
     # Debug is set in the launching install-base script by default.
     # This will display every line. Otherwise only explicit outputs are visible
-    set -x
+    set -ex
+    echo "Debug mode is on"
 else
     exec > /dev/null
 fi
@@ -71,7 +72,7 @@ fi
 ## Node.js,npm and yarn and configuration for installing global packages in userspace (Used for tooling, especially in Ethereum)
 echo "Installing Nodejs ⬢"
 cd 
-nodeVersion=14.x # We use current LTS version
+nodeVersion=16.x # We use current LTS version
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 curl -sL https://deb.nodesource.com/setup_"$nodeVersion" -o nodesource_setup.sh
@@ -94,7 +95,7 @@ source ~/.cryptotux/install/ethereum.sh base
 ## Install IPFS
 echo "Installing IPFS 🪐"
 
-IPFSVersion=$(latest_release ipfs/go-ipfs 0.7.0) 
+IPFSVersion=$(latest_release ipfs/go-ipfs 0.11.0)
 wget -q https://dist.ipfs.io/go-ipfs/v$IPFSVersion/go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 tar xvfz go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
 rm go-ipfs_v"$IPFSVersion"_linux-amd64.tar.gz
@@ -105,7 +106,7 @@ rm -rf go-ipfs
 
 ## Install Go environment (Used for Tendermint, Cosmos, Hyperledger Fabric and Libra)
 echo "Installing Go 🐹"
-goVersion=1.15.5
+goVersion=1.17.5
 if [[ -e /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz ]] ; then
     # During development, import from a folder "dataShare" if available
 	cp /vagrant/dataShare/go"$goVersion".linux-amd64.tar.gz .
@@ -145,16 +146,16 @@ sudo usermod -a -G docker $USER
 
 ## Command line utilities 
 echo "Installing command line utilities ⌨"
-# A modern command line text editor 
-microVersion=$(latest_release zyedidia/micro 2.0.8) 
+# A modern command line text editor
+microVersion=$(latest_release zyedidia/micro 2.0.10)
 wget -q "https://github.com/zyedidia/micro/releases/download/v$microVersion/micro-$microVersion-linux64-static.tar.gz"
 tar xzf "micro-$microVersion-linux64-static.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin micro-$microVersion/micro
 rm -rf micro-$microVersion/
 rm "micro-$microVersion-linux64-static.tar.gz"
 
-# Modern and easy encryption tool 
-ageVersion=$(latest_release FiloSottile/age 1.0.0-beta5) 
+# Modern and easy encryption tool
+ageVersion=$(latest_release FiloSottile/age 1.0.0)
 wget -q "https://github.com/FiloSottile/age/releases/download/v$ageVersion/age-v$ageVersion-linux-amd64.tar.gz"
 tar xzf "age-v$ageVersion-linux-amd64.tar.gz"
 sudo install -m 0755 -o root -g root -t /usr/local/bin age/*
@@ -171,7 +172,7 @@ cd
 rm -rf icons-in-terminal
 # Old 3.0 version is available at sudo apt install nnn
 cd 
-nnnVersion=$(latest_release jarun/nnn 3.5) 
+nnnVersion=$(latest_release jarun/nnn 4.4)
 wget -q "https://github.com/jarun/nnn/releases/download/v$nnnVersion/nnn-v$nnnVersion.tar.gz"
 tar xzf "nnn-v$nnnVersion.tar.gz"
 cd nnn-$nnnVersion
@@ -208,8 +209,8 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
     # Console login greeter
     echo "Cryptotux $CRYPTOTUX_VERSION - \\l
 
-    Default user is \"bobby\", password is \"bricodeur\"
-    " | sudo tee /etc/issue | sudo tee /etc/issue.net
+    User is \"bobby\", password is \"bricodeur\"
+  " | sudo tee /etc/issue | sudo tee /etc/issue.net
 
     # Silent launch
     echo 'GRUB_DEFAULT=0
@@ -230,7 +231,7 @@ if [[ $(sudo  dmidecode  | grep -i product | grep -iE 'virtualbox|vmware' ) ]] ;
     ModuleName=ubuntu-text
 
     [ubuntu-text]
-    title=Cryptotux $CRYPTOTUX_VERSION      
+    title=Cryptotux $CRYPTOTUX_VERSION
     black=0x000000
     white=0x00FFFF
     brown=0x009DFD
