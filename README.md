@@ -8,6 +8,18 @@ Username is *bobby*, password is *bricodeur*.
 
 ![screenshot](screenshot.png)
 
+## Use with docker
+Build the image
+```bash
+docker build -t cryptotux .
+
+```
+
+Run the image
+```bash
+docker run -it cryptotux:latest
+```
+
 ## Install the easy visual way with VirtualBox
 * Download the latest *desktop* or *server* image on the [release page](https://github.com/cryptotuxorg/cryptotux/releases)
 * Install [VirtualBox](https://virtualbox.org) (activate VT-x/AMD-V in the BIOS if needed)
@@ -34,8 +46,12 @@ It has been tested on Ubuntu 20.04. Don't do this on a production machine. For d
 ## Development
 Cryptotux is build with Packer, Ansible and Vagrant. To build the image and to contribute, see [contribute](contribute.md)
 
+<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=Z2hwX3Y5ZzZUT0piUWpwM2tLSFFzRTdVUUtwSnN5WEJsYzFVZUJWSQ==#cryptotuxorg/cryptotux&Date" frameBorder="0"></iframe> 
+
 ## Authors
 
 Xavier Lavayssière ([:octocat:](https://github.com/Xalava) [🐦](https://twitter.com/XavierLava))
 
 Alexandre Kurth ([:octocat:](https://github.com/kurthalex) [🐦](https://twitter.com/kurthalex))
+
+[Contributors](https://github.com/cryptotuxorg/cryptotux/graphs/contributors)
