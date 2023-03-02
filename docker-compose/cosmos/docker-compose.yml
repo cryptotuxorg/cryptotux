@@ -1,0 +1,5 @@
+version: '3'
+services:
+  cosmos:
+    image: debian:latest
+    command: git clone https://github.com/cryptotuxorg/cryptotux && bash ./cryptotx/install/cosmos.sh
